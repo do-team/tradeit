@@ -4,6 +4,8 @@ var mysql = require('mysql');
 
 exports.handler = function(event, context) {
 
+    context.fail('"'+event.text+'"');
+
     self = this;
 
     self.GetCommand = function(str, context){
@@ -14,7 +16,6 @@ exports.handler = function(event, context) {
                 return null;
             }
             else{
-                context.fail(data[0]);
                 return  new {
                     command: data[0],
                     member: data[1],
@@ -29,7 +30,6 @@ exports.handler = function(event, context) {
     }
     else 
     {
-
         var data = self.GetCommand(event.text, context);
 
         var connection =  mysql.createConnection({
