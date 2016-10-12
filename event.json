@@ -1,16 +1,7 @@
-<<<<<<< HEAD
 {
     "obj"   : { "text" : "buy XXMX 1233" },
     "event" : { "text" : "buy XXMX 1233" },
     "int"   : 1,
     "text"   : "buy XXMX 1233",
     "arr"   : [ 1, 2, 3, 4 ]
-=======
-{
-    "obj"   : { "text" : "buy XXMX 1233" },
-    "event" : { "text" : "buy XXMX 1233" },
-    "int"   : 1,
-    "text"   : "buy XXMX 1233",
-    "arr"   : [ 1, 2, 3, 4 ]
->>>>>>> 19eae2f2cdc654cd5a294d4eb6551ed1a6c03598
 }
