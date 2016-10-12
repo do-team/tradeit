@@ -1,0 +1,14 @@
+{
+  "name": "tradeit",
+  "version": "1.0.0",
+  "description": "A social oasis for lovers of trading.",
+  "repository": "https://github.com/do-team/tradeit",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+      "aws-sdk": "2.3.11",
+      "mysql": "*"
+  }
+}
