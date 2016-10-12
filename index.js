@@ -20,9 +20,7 @@ exports.handler = function(event, context) {
                     value: data[2]
                 }
             }
-    }
-
-
+    };
 
 
     if (event === null || event.text === null) {
