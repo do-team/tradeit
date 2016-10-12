@@ -1,23 +1,29 @@
 var mysql = require('mysql');
 
 
-function GetCommand(str, context){
-        var data = str.toUpperCase().split();
-        if(data.length != 3)
-        {
-            context.fail("put command in correct format [buy/sell]] [member] [value]");
-            return null;
-        }
-        else{
-            return  new {
-                command: data[0],
-                member: data[1],
-                value: data[2]
-            }
-        }
-}
 
 exports.handler = function(event, context) {
+
+    self = this;
+
+    self.GetCommand = function(str, context){
+            var data = str.toUpperCase().split();
+            if(data.length != 3)
+            {
+                context.fail("put command in correct format [buy/sell]] [member] [value]");
+                return null;
+            }
+            else{
+                return  new {
+                    command: data[0],
+                    member: data[1],
+                    value: data[2]
+                }
+            }
+    }
+
+
+
 
     if (event === null || event.text === null) {
         context.succeed('You sent nothing!');
@@ -25,7 +31,7 @@ exports.handler = function(event, context) {
     else 
     {
 
-        var data = GetCommand(event.text, context);
+        var data = self.GetCommand(event.text, context);
 
         var connection =  mysql.createConnection({
           host   : 'futuredb.cbhsjvpjrptr.us-west-2.rds.amazonaws.com',
@@ -50,6 +56,6 @@ exports.handler = function(event, context) {
                     context.fail('Unexpected command' + data.command );
                 }
             });
-            
+
         }
 };
