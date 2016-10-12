@@ -14,6 +14,7 @@ exports.handler = function(event, context) {
                 return null;
             }
             else{
+                context.fail(data[0]);
                 return  new {
                     command: data[0],
                     member: data[1],
