@@ -1,0 +1,7 @@
+{
+    "obj"   : { "text" : "buy XXMX 1233" },
+    "event" : { "text" : "buy XXMX 1233" },
+    "int"   : 1,
+    "text"   : "buy XXMX 1233",
+    "arr"   : [ 1, 2, 3, 4 ]
+}
