@@ -1,6 +1,9 @@
 var mysql = require('mysql');
 
 
+exports.handler = function(event, context) {
+
+
 function GetCommand(str, context){
             var data = str.toUpperCase().split(' ');
             if(data.length != 3)
@@ -17,12 +20,6 @@ function GetCommand(str, context){
             }
     };
 
-
- exports.handler = function(event, context) {
-
-    context.fail('"'+event.text+'"');
-
-    self = this;
 
     if (event === null || event.text === null) {
         context.succeed('You sent nothing!');
