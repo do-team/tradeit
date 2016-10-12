@@ -8,9 +8,10 @@ exports.handler = function(event, context) {
 
     self.GetCommand = function(str, context){
             var data = str.toUpperCase().split();
+
             if(data.length != 3)
             {
-                context.fail("put command in correct format [buy/sell]] [member] [value]");
+                context.fail("put command in correct format [buy/sell]] [member] [value] '" + str +"'");
                 return null;
             }
             else{
@@ -59,3 +60,4 @@ exports.handler = function(event, context) {
 
         }
 };
+
