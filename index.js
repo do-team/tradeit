@@ -11,13 +11,13 @@ exports.handler = function(event, context)
     else
     {
     if (event.text.toLowerCase() = 'product')
-        da.getProductName(data.product_name,function(err,data))
+        da.getProductName(data.product_name,function(err,data)
         {
         if(err !== null)
                 context.fail(err);
          else
-                context.succeed('Available products: ' + data.product_name)
-    }
+                context.succeed('Available products: ' + data.product_name);
+        });
     }
     else 
     {
@@ -26,7 +26,7 @@ exports.handler = function(event, context)
         //example of usage DB    
         da.getBusinessIdByMember(data.member,function(err, data)
         {
-          if(err != null)
+          if(err !== null)
                 context.fail(err);
           else
                 context.succeed('found member' + data.member);                  
