@@ -8,9 +8,7 @@ exports.handler = function(event, context)
     if (event === null || event.text === null) {
         context.succeed('You sent nothing!');
     }
-    else
-    {
-    if (event.text.toLowerCase() === 'product')
+        if (event.text.toLowerCase() === 'product')
         da.getProductNames(function(err,data)
         {
             if(err !== null)
@@ -18,8 +16,7 @@ exports.handler = function(event, context)
             else
                 context.succeed('Available products: ' + data);
         }) ;
-    }
-    else 
+     else
     {
         var data = common.parseInputOrder(event.text, context);
         
