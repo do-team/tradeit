@@ -9,7 +9,7 @@ exports.getBusinessIdByMember = function(member,callback)
         sqlBase.getSingleRecord(query, callback);
 }
 
-exports.getProductName = function(product_name,callback)
+exports.getProductNames = function(callback)
 {
         var query = "SELECT product_name FROM products";
 

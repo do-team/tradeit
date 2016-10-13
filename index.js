@@ -10,14 +10,14 @@ exports.handler = function(event, context)
     }
     else
     {
-    if (event.text.toLowerCase() = 'product')
-        da.getProductName(data.product_name,function(err,data)
+    if (event.text.toLowerCase() === 'product')
+        da.getProductNames(function(err,data)
         {
-        if(err !== null)
+            if(err !== null)
                 context.fail(err);
-         else
-                context.succeed('Available products: ' + data.product_name);
-        });
+            else
+                context.succeed('Available products: ' + data);
+        }) ;
     }
     else 
     {
