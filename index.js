@@ -44,6 +44,6 @@ exports.handler = function(event, context)
             break;
         }
         context.fail('Unexpected command' + data.command );
-    };
+    }
 }
 
