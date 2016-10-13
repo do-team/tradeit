@@ -18,6 +18,7 @@ exports.handler = function(event, context)
          else
                 context.succeed('Available products: ' + data.product_name)
     }
+    }
     else 
     {
         var data = common.parseInputOrder(event.text, context);
