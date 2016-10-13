@@ -8,7 +8,7 @@ exports.handler = function(event, context)
     if (event === null || event.text === null) {
         context.succeed('You sent nothing!');
     }
-        if (event.text.toLowerCase() === 'product')
+        if (event.text.toLowerCase() === 'products')
         da.getProductNames(function(err,data)
         {
             if(err !== null)
