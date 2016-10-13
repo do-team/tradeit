@@ -9,6 +9,7 @@
   },
   "dependencies": {
       "aws-sdk": "2.3.11",
-      "mysql": "*"
+      "mysql": "*",
+      "lodash": "*"
   }
 }

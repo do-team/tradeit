@@ -1,7 +1,7 @@
 var da = require('./dataAccess');
 var mysql = require('mysql');
 var common = require('./common');
-
+var _ = require('lodash');
 
 exports.handler = function(event, context) 
 {
@@ -14,7 +14,13 @@ exports.handler = function(event, context)
             if(err !== null)
                 context.fail(err);
             else
-                context.succeed('Available products: ' + data);
+                {
+                var result = '';
+                _.forEach(data,function(value){
+                result+=value.product_name+' ';
+                });
+                }
+                context.succeed('Available products: ' + result.toUpperCase());
         }) ;
      else
     {
