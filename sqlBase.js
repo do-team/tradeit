@@ -5,7 +5,7 @@ var connection =  mysql.createConnection({
             host   : 'futuredb.cbhsjvpjrptr.us-west-2.rds.amazonaws.com',
             user   : 'marty',
             password : 'martymarty',
-            database : 'Member'
+            database : 'microexchange'
 });
 
 

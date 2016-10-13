@@ -8,3 +8,10 @@ exports.getBusinessIdByMember = function(member,callback)
 
         sqlBase.getSingleRecord(query, callback);
 }
+
+exports.getProductName = function(product_name,callback)
+{
+        var query = "SELECT product_name FROM products";
+
+        sqlBase.getStaticData(query, callback);
+}
