@@ -28,7 +28,7 @@ exports.getStaticData = function(sqlQuery, callback)
 
 exports.getSingleRecord = function(sqlQuery, callback)
 {
-        var connection = ConnectionStart();
+        var connection = connectionStart();
         connection.connect();
         connection.query(sqlQuery, function(err, rows, fields){
                 if (err)

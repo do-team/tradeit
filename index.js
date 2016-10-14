@@ -37,13 +37,12 @@ exports.handler = function(event, context)
 
         switch(data.command){
             case 'BUY':
-                context.succeed('insert into table (position, member , value) values (buy,'+data.member+','+data.value+')');
+                context.succeed('insert into table (position, member , value) values (buy,'+data.member+','+data.value+')')
             break;
             case 'SELL':
-                context.succeed('insert into table (position, member , value) values (sell,'+data.member+','+data.value+')');
+                context.succeed('insert into table (position, member , value) values (sell,'+data.member+','+data.value+')')
             break;
         }
         context.fail('Unexpected command' + data.command );
-        context.succeed('All seems OK!');
     }
 };
