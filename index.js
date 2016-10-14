@@ -19,8 +19,8 @@ exports.handler = function(event, context)
                 _.forEach(data,function(value){
                 result+=value.product_name+' ';
                 });
+                    context.succeed('Available products: ' + result.toUpperCase());
                 }
-                context.succeed('Available products: ' + result.toUpperCase());
         }) ;
      else
     {
@@ -37,10 +37,10 @@ exports.handler = function(event, context)
 
         switch(data.command){
             case 'BUY':
-                context.succeed('insert into table (position, member , value) values (buy,'+data.member+','+data.value+')')
+                context.succeed('insert into table (position, member , value) values (buy,'+data.member+','+data.value+')');
             break;
             case 'SELL':
-                context.succeed('insert into table (position, member , value) values (sell,'+data.member+','+data.value+')')
+                context.succeed('insert into table (position, member , value) values (sell,'+data.member+','+data.value+')');
             break;
         }
         context.fail('Unexpected command' + data.command );
