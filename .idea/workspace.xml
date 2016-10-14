@@ -48,8 +48,8 @@
       <file leaf-file-name="sqlBase.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sqlBase.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
-              <caret line="70" column="39" selection-start-line="70" selection-start-column="39" selection-end-line="70" selection-end-column="39" />
+            <state relative-caret-position="47">
+              <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -514,7 +514,14 @@
       <option name="project" value="LOCAL" />
       <updated>1476429903330</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Change database connection from var to function.">
+      <created>1476432611035</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1476432611087</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -563,7 +570,8 @@
     <MESSAGE value="Purging unnecessary modules." />
     <MESSAGE value="Foreach added, uppercase for results." />
     <MESSAGE value="Small polishing of semicolons." />
-    <option name="LAST_COMMIT_MESSAGE" value="Small polishing of semicolons." />
+    <MESSAGE value="Change database connection from var to function." />
+    <option name="LAST_COMMIT_MESSAGE" value="Change database connection from var to function." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -674,8 +682,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sqlBase.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="70" column="39" selection-start-line="70" selection-start-column="39" selection-end-line="70" selection-end-column="39" />
+        <state relative-caret-position="47">
+          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
           <folding />
         </state>
       </provider>
