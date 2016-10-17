@@ -78,3 +78,24 @@ exports.deleteMatchedOrders = function(callback)
 
         sqlBase.getStaticData(query, callback);
 }
+
+exports.confirmOrderType = function(callback)
+{
+        var query = "SELECT type FROM order_types WHERE type='BUY'";
+
+        sqlBase.getSingleRecord(query, callback);
+}
+
+exports.confirmProductAvailable = function(callback)
+{
+        var query = "SELECT type FROM products WHERE product_name='data.product'";
+
+        sqlBase.getStaticData(query, callback);
+}
+
+exports.historyRecord = function(callback)
+{
+        var query = "INSERT INTO history ('order_type','product_name','price') VALUES ('BUY', 'WOOD', 100)";
+
+        sqlBase.getStaticData(query, callback);
+}

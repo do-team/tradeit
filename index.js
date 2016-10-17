@@ -22,27 +22,31 @@ exports.handler = function(event, context)
                     context.succeed('Available products: ' + result.toUpperCase());
                 }
         }) ;
+        if (event.text.toLowerCase() === 'help')
+                context.succeed('HELP recognised!');
+
      else
     {
-        var data = common.parseInputOrder(event.text, context);
-        
-        //example of usage DB    
-        da.getBusinessIdByMember(data.member,function(err, data)
-        {
-          if(err !== null)
-                context.fail(err);
-          else
-                context.succeed('found member' + data.member);                  
-        });
 
-        switch(data.command){
-            case 'BUY':
-                context.succeed('insert into table (position, member , value) values (buy,'+data.member+','+data.value+')');
-            break;
-            case 'SELL':
-                context.succeed('insert into table (position, member , value) values (sell,'+data.member+','+data.value+')');
-            break;
-        }
-        context.fail('Unexpected command' + data.command );
+context.succeed('Do not understand...');
+
+     //example of usage DB
+     //   da.getBusinessIdByMember(data.member,function(err, data)
+     //  {
+     //    if(err !== null)
+     //           context.fail(err);
+     //     else
+     //           context.succeed('found member' + data.member);
+     //   });
+
+     //   switch(data.command){
+     //      case 'BUY':
+     //           context.succeed('insert into table (position, member , value) values ('data.command+','+data.product+','+data.price+')');
+     //       break;
+     //       case 'SELL':
+     //           context.succeed('insert into table (position, member , value) values ('data.command','+data.product+','+data.price+')');
+     //       break;
+     //   }
+     //   context.fail('Unexpected command or argument' + data.command + data.product + data.price);
     }
 };
