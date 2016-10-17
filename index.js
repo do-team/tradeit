@@ -28,7 +28,7 @@ exports.handler = function(event, context)
                 context.succeed('HELP recognised!');
 
      else
-
+     var data = common.parseInputOrder(event.text, context);
      da.getBidPrices(function(err,data)
              {
                  if(err !== null)
@@ -40,7 +40,7 @@ exports.handler = function(event, context)
                          {
                          result+=value.price+', ';
                          });
-                         context.succeed('Wood is being sold for ' + result.toUpperCase());
+                         context.succeed(data.product+' is being sold for ' + result.toUpperCase());
                      }
              }) ;
 

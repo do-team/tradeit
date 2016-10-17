@@ -25,7 +25,7 @@ exports.getAskPrices = function(callback)
 
 exports.getBidPrices = function(callback)
 {
-        var query = "SELECT * FROM orderbook WHERE product_name='WOOD' AND order_type='buy' ORDER BY price ASC";
+        var query = "SELECT * FROM orderbook WHERE product_name='"+product+"' AND order_type='buy' ORDER BY price ASC";
 
         sqlBase.getStaticData(query, callback);
 }
