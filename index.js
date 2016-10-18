@@ -2,7 +2,7 @@ var da = require('./dataAccess');
 var mysql = require('mysql');
 var common = require('./common');
 var _ = require('lodash');
-
+var market_depth = 5;
 
 exports.handler = function(event, context) 
 {
@@ -34,8 +34,8 @@ exports.handler = function(event, context)
      else
 
      var data = common.parseInputOrder(event.text);
-            // Check, if product exists.
-          da.confirmProductAvailable(data,function(err,datarows)
+          // Add check, if order type / command exists here.
+          da.confirmProductAvailable(data,function(err,datarows) // Check, if product exists.
                 {
                 if(err !== null)
                     context.fail(err);
