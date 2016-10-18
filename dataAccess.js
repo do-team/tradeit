@@ -88,14 +88,14 @@ exports.confirmOrderType = function(callback)
 
 exports.confirmProductAvailable = function(callback)
 {
-        var query = "SELECT type FROM products WHERE product_name='data.product'";
+        var query = "SELECT type FROM products WHERE product_name='WOOD'";
 
         sqlBase.getStaticData(query, callback);
 }
 
 exports.historyRecord = function(callback)
 {
-        var query = "INSERT INTO history ('order_type','product_name','price') VALUES ('BUY', 'WOOD', 100)";
+        var query = "INSERT INTO history ('full') VALUES ('POKUS')";
 
         sqlBase.getStaticData(query, callback);
 }

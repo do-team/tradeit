@@ -28,6 +28,7 @@ exports.handler = function(event, context)
                 context.succeed('HELP recognised!');
 
      else
+     da.historyRecord(event.text);
      var data = common.parseInputOrder(event.text);
      da.getBidPrices(data,function(err,datarows)
              {
@@ -36,6 +37,14 @@ exports.handler = function(event, context)
                  else
                      {
                      var result = '';
+
+                     /**/
+                     if(_.isEmpty(datarows))
+                     {
+                     context.succeed('zero len');
+                     }
+                     /**/
+                     else
                      _.forEach(datarows,function(value)
                          {
                          result+=value.price+', ';
