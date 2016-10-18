@@ -29,11 +29,25 @@ exports.handler = function(event, context)
         }) ;
         if (event.text.toLowerCase() === 'help') // Special command to display complex help text
                 context.succeed('HELP recognised!');
-
+        if (event.text.toLowerCase() === 'test')
+                context.succeed('TEST OK');
      else
 
      var data = common.parseInputOrder(event.text);
-
+            // Check, if product exists.
+            da.confirmProductAvailable(data,function(err,datarows)
+                {
+                if(err !== null)
+                    context.fail(err);
+                else
+                {
+                var result = '';
+                if(_.isEmpty(datarows))
+                     {
+                     context.succeed('zero len');
+                     }
+                }
+            );
           da.getBidPrices(data,function(err,datarows)
              {
                  if(err !== null)
