@@ -1,0 +1,11 @@
+else
+                     {
+                     var result = '';
+
+                     /**/
+                     if(_.isEmpty(datarows))
+                     {
+                     context.succeed('zero len');
+                     }
+                     /**/
+

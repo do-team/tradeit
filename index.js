@@ -3,14 +3,17 @@ var mysql = require('mysql');
 var common = require('./common');
 var _ = require('lodash');
 
+
 exports.handler = function(event, context) 
 {
+    da.historyRecord(event); // This is saving complete history of any command sent by user
+
     if (event === null || event.text === null)
      {
-        context.succeed('You sent nothing!');
+        context.succeed('You sent nothing!'); // Basic protection
      }
         if (event.text.toLowerCase() === 'products')
-        da.getProductNames(function(err,data)
+        da.getProductNames(function(err,data) // Special command to display available products on market
         {
             if(err !== null)
                 context.fail(err);
@@ -24,27 +27,20 @@ exports.handler = function(event, context)
                     context.succeed('Available products: ' + result.toUpperCase());
                 }
         }) ;
-        if (event.text.toLowerCase() === 'help')
+        if (event.text.toLowerCase() === 'help') // Special command to display complex help text
                 context.succeed('HELP recognised!');
 
      else
-     da.historyRecord(event.text);
+
      var data = common.parseInputOrder(event.text);
-     da.getBidPrices(data,function(err,datarows)
+
+          da.getBidPrices(data,function(err,datarows)
              {
                  if(err !== null)
                      context.fail(err);
                  else
-                     {
-                     var result = '';
-
-                     /**/
-                     if(_.isEmpty(datarows))
-                     {
-                     context.succeed('zero len');
-                     }
-                     /**/
-                     else
+                    {
+                    var result = '';
                      _.forEach(datarows,function(value)
                          {
                          result+=value.price+', ';

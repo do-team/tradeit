@@ -93,9 +93,9 @@ exports.confirmProductAvailable = function(callback)
         sqlBase.getStaticData(query, callback);
 }
 
-exports.historyRecord = function(callback)
+exports.historyRecord = function(event, callback)
 {
-        var query = "INSERT INTO history ('full') VALUES ('POKUS')";
+        var query = "INSERT INTO history (full) VALUES ('"+event.text+"')";
 
         sqlBase.getStaticData(query, callback);
 }
