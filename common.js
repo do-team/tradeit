@@ -8,6 +8,6 @@ exports.parseInputOrder = function(str) {
         return  {
             command: data[0],
             product: data[1],
-            value: data[2]
+            price: data[2]
         }
 }

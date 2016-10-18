@@ -23,9 +23,9 @@ exports.getAskPrices = function(callback)
         sqlBase.getStaticData(query, callback);
 }
 
-exports.getBidPrices = function(callback)
+exports.getBidPrices = function(data, callback)
 {
-        var query = "SELECT * FROM orderbook WHERE product_name='OIL' AND order_type='buy' ORDER BY price ASC";
+        var query = "SELECT * FROM orderbook WHERE product_name='"+data.product+"' AND order_type='"+data.command+"' ORDER BY price ASC";
 
         sqlBase.getStaticData(query, callback);
 }

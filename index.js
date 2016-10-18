@@ -28,15 +28,15 @@ exports.handler = function(event, context)
                 context.succeed('HELP recognised!');
 
      else
-     var data = common.parseInputOrder(event.text, context);
-     da.getBidPrices(function(err,data)
+     var data = common.parseInputOrder(event.text);
+     da.getBidPrices(data,function(err,datarows)
              {
                  if(err !== null)
                      context.fail(err);
                  else
                      {
                      var result = '';
-                     _.forEach(data,function(value)
+                     _.forEach(datarows,function(value)
                          {
                          result+=value.price+', ';
                          });
