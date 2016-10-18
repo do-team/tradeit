@@ -86,11 +86,11 @@ exports.confirmOrderType = function(callback)
         sqlBase.getSingleRecord(query, callback);
 }
 
-exports.confirmProductAvailable = function(callback)
+exports.confirmProductAvailable = function(data, callback)
 {
-        var query = "SELECT type FROM products WHERE product_name='WOOD'";
+        var query = "SELECT * FROM products WHERE product_name='"+data.product+"'";
 
-        sqlBase.getStaticData(query, callback);
+        sqlBase.getSingleRecord(query, callback);
 }
 
 exports.historyRecord = function(event, callback)

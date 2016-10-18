@@ -35,19 +35,18 @@ exports.handler = function(event, context)
 
      var data = common.parseInputOrder(event.text);
             // Check, if product exists.
-            da.confirmProductAvailable(data,function(err,datarows)
+          da.confirmProductAvailable(data,function(err,datarows)
                 {
                 if(err !== null)
                     context.fail(err);
                 else
-                {
-                var result = '';
-                if(_.isEmpty(datarows))
-                     {
-                     context.succeed('zero len');
-                     }
-                }
-            );
+                    {
+                    if (data !== null)
+                         {
+                         context.succeed('Product '+data.product+' not available!');
+                         }
+                    }
+                });
           da.getBidPrices(data,function(err,datarows)
              {
                  if(err !== null)
