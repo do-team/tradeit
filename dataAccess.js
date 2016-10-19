@@ -59,20 +59,15 @@ exports.countOrders = function(callback)
 // If there are too many orders, it will delete most irrelevant order in the book.
 exports.deleteIrrelevantOrder = function(callback)
 {
-        var query = "DELETE FROM orderbook WHERE product_name='wood' AND order_type='buy' ORDER BY price ASC LIMIT 1";
+        var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC LIMIT 1";
 
         sqlBase.getStaticData(query, callback);
 }
 
-// This is actually match making. If this succeeds, it will inform user about trade!
+// This is actually match making. If this succeeds, it will inform user about successful trade!
 exports.deleteMatchedOrders = function(callback)
 {
         var query = "DELETE t1,t2 FROM orderbook t1, orderbook t2 WHERE t1.product_name = t2.product_name AND t1.price = t2.price AND t1.order_type <> t2.order_type";
 
         sqlBase.getStaticData(query, callback);
 }
-
-
-
-
-
