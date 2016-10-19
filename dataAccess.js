@@ -99,3 +99,10 @@ exports.historyRecord = function(event, callback)
 
         sqlBase.getStaticData(query, callback);
 }
+
+exports.confirmCommand = function(data, callback)
+{
+        var query = "SELECT * FROM order_types WHERE type='"+data.command+"'";
+
+        sqlBase.getSingleRecord(query, callback);
+}

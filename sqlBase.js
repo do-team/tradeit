@@ -14,14 +14,17 @@ function connectionStart()
 exports.getStaticData = function(sqlQuery, callback)
 {
         var connection = connectionStart();
+        //console.log(callback);
+        //console.log(sqlQuery);
         connection.connect();
         connection.query(sqlQuery, function(err, rows, fields){
+        if (callback) {
               if (err)
               {
                 callback(err,null);
               }
               else
-                callback(null, rows);
+                callback(null, rows);}
       });
       connection.end();
 }
