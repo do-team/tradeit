@@ -46,15 +46,19 @@ exports.handler = function(event, context) {
        if (dataRows == null) {
         context.succeed('Product ' + data.product + ' not available! Please try /TRD PRODUCTS to see, what is available.');
        } else {
-        da.getBidPrices(data, function(err, dataRows) {
+        da.getPrices(data, function(err, dataRows) {
          if (err !== null)
           context.fail(err);
          else {
+            if data.price === 0 || NULL
+
           var result = '';
           _.forEach(dataRows, function(value) {
            result += value.price + ', ';
           });
-          context.succeed(data.product + ' is being sold for ' + result.toUpperCase());
+          context.succeed(data.product + ' is available on ' + data.command + ' side for following prices: ' + result.toUpperCase());
+
+
          }
         });
        }
