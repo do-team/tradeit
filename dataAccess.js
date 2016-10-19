@@ -23,9 +23,9 @@ exports.getAskPrices = function(callback)
         sqlBase.getStaticData(query, callback);
 }
 
-exports.getBidPrices = function(callback)
+exports.getBidPrices = function(data, callback)
 {
-        var query = "SELECT * FROM orderbook WHERE product_name='WOOD' AND order_type='buy' ORDER BY price ASC";
+        var query = "SELECT * FROM orderbook WHERE product_name='"+data.product+"' AND order_type='"+data.command+"' ORDER BY price ASC";
 
         sqlBase.getStaticData(query, callback);
 }
@@ -77,4 +77,32 @@ exports.deleteMatchedOrders = function(callback)
         var query = "DELETE t1,t2 FROM orderbook t1, orderbook t2 WHERE t1.product_name = t2.product_name AND t1.price = t2.price AND t1.order_type <> t2.order_type";
 
         sqlBase.getStaticData(query, callback);
+}
+
+exports.confirmOrderType = function(callback)
+{
+        var query = "SELECT type FROM order_types WHERE type='BUY'";
+
+        sqlBase.getSingleRecord(query, callback);
+}
+
+exports.confirmProductAvailable = function(data, callback)
+{
+        var query = "SELECT * FROM products WHERE product_name='"+data.product+"'";
+
+        sqlBase.getSingleRecord(query, callback);
+}
+
+exports.historyRecord = function(event, callback)
+{
+        var query = "INSERT INTO history (full) VALUES ('"+event.text+"')";
+
+        sqlBase.getStaticData(query, callback);
+}
+
+exports.confirmCommand = function(data, callback)
+{
+        var query = "SELECT * FROM order_types WHERE type='"+data.command+"'";
+
+        sqlBase.getSingleRecord(query, callback);
 }

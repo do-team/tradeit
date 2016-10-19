@@ -2,47 +2,65 @@ var da = require('./dataAccess');
 var mysql = require('mysql');
 var common = require('./common');
 var _ = require('lodash');
+var market_depth = 5;
 
-exports.handler = function(event, context) 
-{
-    if (event === null || event.text === null) {
-        context.succeed('You sent nothing!');
+exports.handler = function(event, context) {
+ da.historyRecord(event); // This is saving complete history of any command sent by user
+
+ if (event === null || event.text === null) {
+  context.succeed('You sent nothing!'); // Basic protection
+ }
+ if (event.text.toLowerCase() === 'products')
+  da.getProductNames(function(err, data) // Special command to display available products on market
+   {
+    if (err !== null)
+     context.fail(err);
+    else {
+     var result = '';
+     _.forEach(data, function(value) {
+      result += value.product_name + ', ';
+     });
+     context.succeed('Available products: ' + result.toUpperCase());
     }
-        if (event.text.toLowerCase() === 'products')
-        da.getProductNames(function(err,data)
-        {
-            if(err !== null)
-                context.fail(err);
-            else
-                {
-                var result = '';
-                _.forEach(data,function(value){
-                result+=value.product_name+' ';
-                });
-                    context.succeed('Available products: ' + result.toUpperCase());
-                }
-        }) ;
-     else
-    {
-        var data = common.parseInputOrder(event.text, context);
-        
-        //example of usage DB    
-        da.getBusinessIdByMember(data.member,function(err, data)
-        {
-          if(err !== null)
-                context.fail(err);
-          else
-                context.succeed('found member' + data.member);                  
+   });
+ if (event.text.toLowerCase() === 'help') // Special command to display complex help text
+  context.succeed('HELP recognised!');
+ if (event.text.toLowerCase() === 'test')
+  context.succeed('TEST OK');
+ else
+
+  var data = common.parseInputOrder(event.text);
+ da.confirmCommand(data, function(err, commandRows) {
+  if (err !== null)
+   context.fail(err);
+  else {
+   if (commandRows == null) {
+    context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
+   } else {
+    // Add check, if order type / command exists here.
+    da.confirmProductAvailable(data, function(err, dataRows) // Check, if product exists.
+     {
+      if (err !== null)
+       context.fail(err);
+      else {
+       if (dataRows == null) {
+        context.succeed('Product ' + data.product + ' not available! Please try /TRD PRODUCTS to see, what is available.');
+       } else {
+        da.getBidPrices(data, function(err, dataRows) {
+         if (err !== null)
+          context.fail(err);
+         else {
+          var result = '';
+          _.forEach(dataRows, function(value) {
+           result += value.price + ', ';
+          });
+          context.succeed(data.product + ' is being sold for ' + result.toUpperCase());
+         }
         });
-
-        switch(data.command){
-            case 'BUY':
-                context.succeed('insert into table (position, member , value) values (buy,'+data.member+','+data.value+')');
-            break;
-            case 'SELL':
-                context.succeed('insert into table (position, member , value) values (sell,'+data.member+','+data.value+')');
-            break;
-        }
-        context.fail('Unexpected command' + data.command );
-    }
+       }
+      }
+     });
+   }
+  }
+ });
 };
