@@ -46,10 +46,7 @@ exports.handler = function(event, context) {
        if (dataRows == null) {
         context.succeed('Product ' + data.product + ' not available! Please try /TRD PRODUCTS to see, what is available.');
        } else {
-            if (data.price.value === null || 0) {
-
-
-
+            if (!data.price) {
                 da.getPrices(data, function(err, dataRows) {
                  if (err !== null)
                   context.fail(err);
@@ -61,10 +58,19 @@ exports.handler = function(event, context) {
                   context.succeed(data.product + ' is available on ' + data.command + ' side for following prices: ' + result.toUpperCase());
                  }
                 });
-            } else {
-                context.succeed('END... ' + data.command + ' ' + data.product + ' ' + data.price);
-                }
+            }
+// NOVY KOD
+            else {
+                da.insertOrder (data);
+                context.succeed('Order succesfully insterted! '+ data.command + ' ' + data.product + ' ' + data.price);
+            }
 
+
+
+// ORIGINALNI KOD
+//            else {
+//               context.succeed('END... ' + data.command + ' ' + data.product + ' ' + data.price);                }
+//
 
 
        }
