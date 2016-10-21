@@ -44,16 +44,16 @@ exports.getPrices = function(data, callback)
 exports.insertOrder = function(data, callback)
 {
         var query = "INSERT INTO orderbook (order_type, product_name, price) VALUES ('" + data.command + "','" + data.product + "', " + data.price + ")";
-        console.log(query);
+
         sqlBase.getStaticData(query, callback);
 }
 
 // After order successfully added, we have to check, if there are not so many orders, defined by variable market_depth (this is defined per product).
-exports.countOrders = function(callback)
+exports.countOrders = function(query, callback)
 {
         var query = "SELECT COUNT(*) FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "'";
 
-        sqlBase.getStaticData(query, callback);
+        sqlBase.getSingleRecord(query, callback);
 }
 
 // If there are too many orders, it will delete most irrelevant order in the book.
