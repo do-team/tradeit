@@ -1,98 +1,6 @@
-
 var sqlBase  = require('./sqlBase');
 
-
-exports.getBusinessIdByMember = function(member,callback)
-{
-        var query = "SELECT business_id FROM members WHERE member_id='"+member+"'";
-
-        sqlBase.getSingleRecord(query, callback);
-}
-
-exports.getProductNames = function(callback)
-{
-        var query = "SELECT product_name FROM products";
-
-        sqlBase.getStaticData(query, callback);
-}
-
-exports.getAskPrices = function(callback)
-{
-        var query = "SELECT * FROM orderbook WHERE product_name='WOOD' AND order_type='sell' ORDER BY price DESC";
-
-        sqlBase.getStaticData(query, callback);
-}
-
-exports.getBidPrices = function(data, callback)
-{
-        var query = "SELECT * FROM orderbook WHERE product_name='"+data.product+"' AND order_type='"+data.command+"' ORDER BY price ASC";
-
-        sqlBase.getStaticData(query, callback);
-}
-
-exports.deleteLowestBid = function(callback)
-{
-        var query = "DELETE FROM orderbook WHERE product_name='wood' AND order_type='buy' ORDER BY price ASC LIMIT 1";
-
-        sqlBase.getStaticData(query, callback);
-}
-
-exports.deleteHighestAsk = function(callback)
-{
-        var query = "DELETE FROM orderbook WHERE product_name='wood' AND order_type='sell' ORDER BY price DESC LIMIT 1";
-
-        sqlBase.getStaticData(query, callback);
-}
-
-exports.insertBid = function(callback)
-{
-        var query = "INSERT INTO orderbook (order_type, product_name, price) VALUES ('buy','wood',98)";
-
-        sqlBase.getStaticData(query, callback);
-}
-
-exports.insertAsk = function(callback)
-{
-        var query = "INSERT INTO orderbook (order_type, product_name, price) VALUES ('sell','wood',98)";
-
-        sqlBase.getStaticData(query, callback);
-}
-
-exports.countBids = function(callback)
-{
-        var query = "SELECT COUNT(*) FROM orderbook WHERE product_name='wood' AND order_type='buy'";
-
-        sqlBase.getStaticData(query, callback);
-}
-
-exports.countAsks = function(callback)
-{
-        var query = "SELECT COUNT(*) FROM orderbook WHERE product_name='wood' AND order_type='sell'";
-
-        sqlBase.getStaticData(query, callback);
-}
-
-exports.deleteMatchedOrders = function(callback)
-{
-        var query = "DELETE t1,t2 FROM orderbook t1, orderbook t2 WHERE t1.product_name = t2.product_name AND t1.price = t2.price AND t1.order_type <> t2.order_type";
-
-        sqlBase.getStaticData(query, callback);
-}
-
-exports.confirmOrderType = function(callback)
-{
-        var query = "SELECT type FROM order_types WHERE type='BUY'";
-
-        sqlBase.getSingleRecord(query, callback);
-}
-
-exports.confirmProductAvailable = function(data, callback)
-{
-        var query = "SELECT * FROM products WHERE product_name='"+data.product+"'";
-
-        sqlBase.getSingleRecord(query, callback);
-}
-
+// Any command is saved into global history for later troubleshooting etc.
 exports.historyRecord = function(event, callback)
 {
         var query = "INSERT INTO history (full) VALUES ('"+event.text+"')";
@@ -100,9 +8,66 @@ exports.historyRecord = function(event, callback)
         sqlBase.getStaticData(query, callback);
 }
 
+// This shall inform customer about available products on the market.
+exports.getProductNames = function(callback)
+{
+        var query = "SELECT product_name FROM products";
+
+        sqlBase.getStaticData(query, callback);
+}
+
+// First we have to confirm, that order type exists. It can be BUY and SELL from the start, but more order types can be added.
 exports.confirmCommand = function(data, callback)
 {
-        var query = "SELECT * FROM order_types WHERE type='"+data.command+"'";
+        var query = "SELECT * FROM order_types WHERE type='" + data.command + "'";
 
         sqlBase.getSingleRecord(query, callback);
+}
+
+// Then we have to confirm, that product is really available.
+exports.confirmProductAvailable = function(data, callback)
+{
+        var query = "SELECT * FROM products WHERE product_name='" + data.product + "'";
+
+        sqlBase.getSingleRecord(query, callback);
+}
+
+// When user sends no specific price, it shall give him list of available orders.
+exports.getPrices = function(data, callback)
+{
+        var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC";
+
+        sqlBase.getStaticData(query, callback);
+}
+
+// Correctly defined order shall be added into right place in the database table.
+exports.insertOrder = function(data, callback)
+{
+        var query = "INSERT INTO orderbook (order_type, product_name, price) VALUES ('" + data.command + "','" + data.product + "', " + data.price + ")";
+
+        sqlBase.getStaticData(query, callback);
+}
+
+// After order successfully added, we have to check, if there are not so many orders, defined by variable market_depth (this is defined per product).
+exports.countOrders = function(query, callback)
+{
+        var query = "SELECT COUNT(*) FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "'";
+
+        sqlBase.getSingleRecord(query, callback);
+}
+
+// If there are too many orders, it will delete most irrelevant order in the book.
+exports.deleteIrrelevantOrder = function(callback)
+{
+        var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC LIMIT 1";
+
+        sqlBase.getStaticData(query, callback);
+}
+
+// This is actually match making. If this succeeds, it will inform user about successful trade!
+exports.deleteMatchedOrders = function(callback)
+{
+        var query = "DELETE t1,t2 FROM orderbook t1, orderbook t2 WHERE t1.product_name = t2.product_name AND t1.price = t2.price AND t1.order_type <> t2.order_type";
+
+        sqlBase.getStaticData(query, callback);
 }
