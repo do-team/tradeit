@@ -61,11 +61,28 @@ exports.handler = function(event, context) {
                                         if (err !== null)
                                             context.fail(err);
                                         else {
-                                            var result = '';
-                                            _.forEach(dataRows, function(value) {
-                                                result += value.price + ', ';
+                                            console.log('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
+                                            da.countOrders(data, function(err, countRows) {
+                                                if (err !== null)
+                                                    context.fail(err);
+                                                else
+                                                    var totalOrders = '';
+                                                _.forEach(countRows, function(value) {
+                                                    totalOrders = value;
+                                                });
+                                                context.succeed('Number of orders:' + totalOrders);
                                             });
-                                            context.succeed('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
+
+                                            // **
+                                            // if totalOrders > market_depth { da.deleteIrrelevantOrder }
+                                            // Here it will delete irellevant orders from order book, if there are too many of them.
+
+                                            // da.deleteMatchedOrders
+                                            // This shall delete orders, which are matched, in case of error, it will say "nothing was matched".
+                                            // And that shall do last message.
+
+
+                                            // **
                                         }
                                     });
 
