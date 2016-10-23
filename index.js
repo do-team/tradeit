@@ -44,7 +44,8 @@ exports.handler = function(event, context) {
                             if (dataRows == null) {
                                 context.succeed('Product ' + data.product + ' not available! Please try /TRD PRODUCTS to see, what is available.');
                             } else {
-                                if (!data.price) {
+                                if (!data.price) { // Here the SWITCH between sell and buy goes.
+
                                     da.getPrices(data, function(err, dataRows) {
                                         if (err !== null)
                                             context.fail(err);
@@ -56,6 +57,7 @@ exports.handler = function(event, context) {
                                             context.succeed(data.product + ' is available on ' + data.command + ' side for following prices: ' + result.toUpperCase());
                                         }
                                     });
+                                // End of SWITCH.
                                 } else {
                                     da.insertOrder(data, function(err, dataRows) {
                                         if (err !== null)
