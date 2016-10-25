@@ -80,22 +80,25 @@ exports.handler = function(event, context) {
                                         else {
                                             console.log('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
                                             da.countOrders(data, function(err, countRows) {
-                                                if (err !== null)
-                                                    context.fail(err);
-                                                else
-                                                    var totalOrders = '';
-                                                    _.forEach(countRows, function(value) {
-                                                    totalOrders = value;
-                                                    if (totalOrders > market_depth) {
-                                                        da.deleteIrrelevantOrder(data, function(err,delRows) {
-                                                        if (err !== null)
-                                                            context.fail(err);
-                                                        else
-                                                            console.log('No orders exceeding market depth!');
+                                                if (err !== null) {
+                                                    context.fail(err);}
+                                                    else {
+                                                        var totalOrders = '';
+                                                        _.forEach(countRows, function(value) {
+                                                        totalOrders = value;
+                                                            if (totalOrders > market_depth) {
+                                                                console.log('Irrelevant orders found!');
+                                                                da.deleteIrrelevantOrder (data);
+                                                                //da.deleteIrrelevantOrder(data, function(err, delRows) {
+                                                                //if (err !== null) {
+                                                                //    console.log(totalOrders);
+                                                                //    context.fail(err);}
+                                                                //    else {
+                                                                //        console.log('FIAL');}
+                                                                //});
+                                                            } else {console.log('No irrelevant orders.');}
                                                         });
                                                     }
-                                                });
-
                                             // **
 
                                             // da.deleteMatchedOrders
@@ -105,7 +108,7 @@ exports.handler = function(event, context) {
                                             // **
 
 
-                                                context.succeed('Number of orders:' + totalOrders);
+                                            context.succeed('Number of orders:' + totalOrders);
 
 
 
