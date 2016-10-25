@@ -5,9 +5,9 @@ var _ = require('lodash');
 var market_depth = 5;
 
 exports.handler = function(event, context) {
-    da.historyRecord(event); // This is saving complete history of any command sent by user
+    da.historyRecord(event); // This is saving complete history of any command sent by user, whatever string he sends.
     if (event === null || event.text === null) {
-        context.succeed('You sent nothing!'); // Basic protection
+        context.succeed('You sent nothing!'); // Basic protection, to rule out user sends nothing.
     }
     if (event.text.toLowerCase() === 'products')
         da.getProductNames(function(err, data) // Special command to display available products on market
@@ -22,7 +22,7 @@ exports.handler = function(event, context) {
                     context.succeed('Available products: ' + result.toUpperCase());
                 }
             });
-    if (event.text.toLowerCase() === 'help') // Special command to display complex help text
+    if (event.text.toLowerCase() === 'help') // Special command to display complex help text (TODO).
         context.succeed('HELP recognised!');
     if (event.text.toLowerCase() === 'test')
         context.succeed('TEST OK');
@@ -35,7 +35,6 @@ exports.handler = function(event, context) {
             if (commandRows == null) {
                 context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
             } else {
-                // Add check, if order type / command exists here.
                 da.confirmProductAvailable(data, function(err, dataRows) // Check, if product exists.
                     {
                         if (err !== null)
@@ -44,9 +43,10 @@ exports.handler = function(event, context) {
                             if (dataRows == null) {
                                 context.succeed('Product ' + data.product + ' not available! Please try /TRD PRODUCTS to see, what is available.');
                             } else {
-                                if (!data.price) { // Here the SWITCH between sell and buy goes.
-
-                                    da.getPrices(data, function(err, dataRows) {
+                                if (!data.price) { // If user send no price, it will list available orders for one of sides.
+                                    switch(data.command) {
+                                    case "BUY":
+                                    da.getAskPrices(data, function(err, dataRows) {
                                         if (err !== null)
                                             context.fail(err);
                                         else {
@@ -54,10 +54,25 @@ exports.handler = function(event, context) {
                                             _.forEach(dataRows, function(value) {
                                                 result += value.price + ', ';
                                             });
-                                            context.succeed(data.product + ' is available on ' + data.command + ' side for following prices: ' + result.toUpperCase());
+                                            context.succeed('You can buy ' + data.product + ' for these prices: ' + result.toUpperCase());
                                         }
                                     });
-                                // End of SWITCH.
+                                    break;
+                                    case "SELL":
+                                    da.getBidPrices(data, function(err, dataRows) {
+                                        if (err !== null)
+                                            context.fail(err);
+                                        else {
+                                            var result = '';
+                                            _.forEach(dataRows, function(value) {
+                                                result += value.price + ', ';
+                                            });
+                                            context.succeed('You can sell ' + data.product + ' for these prices ' + result.toUpperCase());
+                                        }
+                                    });
+
+                                    break;
+                                    }
                                 } else {
                                     da.insertOrder(data, function(err, dataRows) {
                                         if (err !== null)
@@ -69,22 +84,36 @@ exports.handler = function(event, context) {
                                                     context.fail(err);
                                                 else
                                                     var totalOrders = '';
-                                                _.forEach(countRows, function(value) {
+                                                    _.forEach(countRows, function(value) {
                                                     totalOrders = value;
+                                                    if (totalOrders > market_depth) {
+                                                        da.deleteIrrelevantOrder(data, function(err,delRows) {
+                                                        if (err !== null)
+                                                            context.fail(err);
+                                                        else
+                                                            console.log('No orders exceeding market depth!');
+                                                        });
+                                                    }
                                                 });
-                                                context.succeed('Number of orders:' + totalOrders);
-                                            });
 
                                             // **
-                                            // if totalOrders > market_depth { da.deleteIrrelevantOrder }
-                                            // Here it will delete irellevant orders from order book, if there are too many of them.
 
                                             // da.deleteMatchedOrders
                                             // This shall delete orders, which are matched, in case of error, it will say "nothing was matched".
                                             // And that shall do last message.
 
-
                                             // **
+
+
+                                                context.succeed('Number of orders:' + totalOrders);
+
+
+
+
+
+                                            });
+
+
                                         }
                                     });
 

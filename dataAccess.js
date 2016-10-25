@@ -33,9 +33,17 @@ exports.confirmProductAvailable = function(data, callback)
 }
 
 // When user sends no specific price, it shall give him list of available orders.
-exports.getPrices = function(data, callback)
+exports.getAskPrices = function(data, callback)
 {
-        var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC";
+        var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='SELL' ORDER BY price ASC";
+
+        sqlBase.getStaticData(query, callback);
+}
+
+// When user sends no specific price, it shall give him list of available orders.
+exports.getBidPrices = function(data, callback)
+{
+        var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='BUY' ORDER BY price ASC";
 
         sqlBase.getStaticData(query, callback);
 }
@@ -57,11 +65,11 @@ exports.countOrders = function(data, callback)
 }
 
 // If there are too many orders, it will delete most irrelevant order in the book.
-exports.deleteIrrelevantOrder = function(callback)
+exports.deleteIrrelevantOrder = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC LIMIT 1";
-
-        sqlBase.getStaticData(query, callback);
+        console.log(query);
+        sqlBase.getSingleRecord(query, callback);
 }
 
 // This is actually match making. If this succeeds, it will inform user about successful trade!
