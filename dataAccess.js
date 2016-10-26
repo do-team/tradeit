@@ -64,18 +64,25 @@ exports.countOrders = function(data, callback)
         sqlBase.getSingleRecord(query, callback);
 }
 
-// If there are too many orders, it will delete most irrelevant order in the book.
-exports.deleteIrrelevantOrder = function(data, callback)
+// If there are too many orders on buy side, it will delete lowest price order in the book.
+exports.deleteLowestBid = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC LIMIT 1";
 
         sqlBase.getSingleRecord(query, callback);
 }
 
+// If there are too many orders on sell side, it will delete highest price in the book.
+exports.deleteHighestAsk = function(data, callback)
+{
+        var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price DESC LIMIT 1";
+
+        sqlBase.getSingleRecord(query, callback);
+}
 // This is actually match making. If this succeeds, it will inform user about successful trade!
 exports.deleteMatchedOrders = function(data, callback)
 {
         var query = "DELETE t1,t2 FROM orderbook t1, orderbook t2 WHERE t1.product_name = '" + data.product +"' AND t1.product_name = t2.product_name AND t1.price = " + data.price + " AND t1.price = t2.price AND t1.order_type <> t2.order_type";
-        console.log(query);
+
         sqlBase.getStaticData(query, callback);
 }

@@ -84,7 +84,7 @@ exports.handler = function(event, context) {
 
                                                 _.forEach(matchRows, function(value) {
                                                     if (value === 2) {
-                                                        context.succeed('Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + '! You are getting very rich!');
+                                                        context.succeed(':money_with_wings: Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + '! :money_with_wings:');
                                                     } else {
                                                         da.countOrders(data, function(err, countRows) {
                                                             if (err !== null) {
@@ -93,15 +93,32 @@ exports.handler = function(event, context) {
                                                                 var totalOrders = '';
                                                                 _.forEach(countRows, function(value) {
                                                                     totalOrders = value;
-                                                                    if (totalOrders > market_depth) {
-                                                                        console.log('Irrelevant orders found!');
-                                                                        da.deleteIrrelevantOrder(data, function(err, delRows) {
+                                                                    if (totalOrders => market_depth) {
+
+
+                                                                        // SWITCH pro rozeznani, zda-li potrebujeme smazat na buy nebo sell side.
+                                                                        switch (data.command) {
+                                                                        case "BUY":
+                                                                        da.deleteLowestBid(data, function(err, delRows) {
                                                                             if (err !== null) {
                                                                                 context.fail(err);
                                                                             } else {
-                                                                                console.log('Alles gut!');
+                                                                                console.log('Irrelevant BUY orders found!');
                                                                             }
                                                                         });
+                                                                        break;
+                                                                        case "SELL":
+                                                                            da.deleteHighestAsk(data, function(err, delRows) {
+                                                                            if (err !== null) {
+                                                                                context.fail(err);
+                                                                            } else {
+                                                                                console.log('Irrelevant SELL orders found!');
+                                                                            }
+                                                                        });
+                                                                        break;
+                                                                        }
+                                                                        // Konec Switche.
+
                                                                     } else {
                                                                         console.log('No irrelevant orders.');
                                                                     }
