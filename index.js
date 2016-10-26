@@ -44,34 +44,34 @@ exports.handler = function(event, context) {
                                 context.succeed('Product ' + data.product + ' not available! Please try /TRD PRODUCTS to see, what is available.');
                             } else {
                                 if (!data.price) { // If user send no price, it will list available orders for one of sides.
-                                    switch(data.command) {
-                                    case "BUY":
-                                    da.getAskPrices(data, function(err, dataRows) {
-                                        if (err !== null)
-                                            context.fail(err);
-                                        else {
-                                            var result = '';
-                                            _.forEach(dataRows, function(value) {
-                                                result += value.price + ', ';
+                                    switch (data.command) {
+                                        case "BUY":
+                                            da.getAskPrices(data, function(err, dataRows) {
+                                                if (err !== null)
+                                                    context.fail(err);
+                                                else {
+                                                    var result = '';
+                                                    _.forEach(dataRows, function(value) {
+                                                        result += value.price + ', ';
+                                                    });
+                                                    context.succeed('You can buy ' + data.product + ' for these prices: ' + result.toUpperCase());
+                                                }
                                             });
-                                            context.succeed('You can buy ' + data.product + ' for these prices: ' + result.toUpperCase());
-                                        }
-                                    });
-                                    break;
-                                    case "SELL":
-                                    da.getBidPrices(data, function(err, dataRows) {
-                                        if (err !== null)
-                                            context.fail(err);
-                                        else {
-                                            var result = '';
-                                            _.forEach(dataRows, function(value) {
-                                                result += value.price + ', ';
+                                            break;
+                                        case "SELL":
+                                            da.getBidPrices(data, function(err, dataRows) {
+                                                if (err !== null)
+                                                    context.fail(err);
+                                                else {
+                                                    var result = '';
+                                                    _.forEach(dataRows, function(value) {
+                                                        result += value.price + ', ';
+                                                    });
+                                                    context.succeed('You can sell ' + data.product + ' for these prices ' + result.toUpperCase());
+                                                }
                                             });
-                                            context.succeed('You can sell ' + data.product + ' for these prices ' + result.toUpperCase());
-                                        }
-                                    });
 
-                                    break;
+                                            break;
                                     }
                                 } else {
                                     da.insertOrder(data, function(err, dataRows) {
@@ -79,43 +79,40 @@ exports.handler = function(event, context) {
                                             context.fail(err);
                                         else {
                                             console.log('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
-                                            da.countOrders(data, function(err, countRows) {
-                                                if (err !== null) {
-                                                    context.fail(err);}
-                                                    else {
-                                                        var totalOrders = '';
-                                                        _.forEach(countRows, function(value) {
-                                                        totalOrders = value;
-                                                            if (totalOrders > market_depth) {
-                                                                console.log('Irrelevant orders found!');
-                                                                da.deleteIrrelevantOrder (data);
-                                                                //da.deleteIrrelevantOrder(data, function(err, delRows) {
-                                                                //if (err !== null) {
-                                                                //    console.log(totalOrders);
-                                                                //    context.fail(err);}
-                                                                //    else {
-                                                                //        console.log('FIAL');}
-                                                                //});
-                                                            } else {console.log('No irrelevant orders.');}
+
+                                            da.deleteMatchedOrders(data, function(err, matchRows) {
+
+                                                _.forEach(matchRows, function(value) {
+                                                    if (value === 2) {
+                                                        context.succeed('Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + '! You are getting very rich!');
+                                                    } else {
+                                                        da.countOrders(data, function(err, countRows) {
+                                                            if (err !== null) {
+                                                                context.fail(err);
+                                                            } else {
+                                                                var totalOrders = '';
+                                                                _.forEach(countRows, function(value) {
+                                                                    totalOrders = value;
+                                                                    if (totalOrders > market_depth) {
+                                                                        console.log('Irrelevant orders found!');
+                                                                        da.deleteIrrelevantOrder(data, function(err, delRows) {
+                                                                            if (err !== null) {
+                                                                                context.fail(err);
+                                                                            } else {
+                                                                                console.log('Alles gut!');
+                                                                            }
+                                                                        });
+                                                                    } else {
+                                                                        console.log('No irrelevant orders.');
+                                                                    }
+                                                                });
+                                                            }
+                                                            context.succeed('Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was successfully inserted into orderbook, but it was not matched.');
                                                         });
                                                     }
-                                            // **
-
-                                            // da.deleteMatchedOrders
-                                            // This shall delete orders, which are matched, in case of error, it will say "nothing was matched".
-                                            // And that shall do last message.
-
-                                            // **
-
-
-                                            context.succeed('Number of orders:' + totalOrders);
-
-
-
-
+                                                });
 
                                             });
-
 
                                         }
                                     });

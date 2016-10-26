@@ -73,9 +73,9 @@ exports.deleteIrrelevantOrder = function(data, callback)
 }
 
 // This is actually match making. If this succeeds, it will inform user about successful trade!
-exports.deleteMatchedOrders = function(callback)
+exports.deleteMatchedOrders = function(data, callback)
 {
-        var query = "DELETE t1,t2 FROM orderbook t1, orderbook t2 WHERE t1.product_name = t2.product_name AND t1.price = t2.price AND t1.order_type <> t2.order_type";
-
+        var query = "DELETE t1,t2 FROM orderbook t1, orderbook t2 WHERE t1.product_name = '" + data.product +"' AND t1.product_name = t2.product_name AND t1.price = " + data.price + " AND t1.price = t2.price AND t1.order_type <> t2.order_type";
+        console.log(query);
         sqlBase.getStaticData(query, callback);
 }
