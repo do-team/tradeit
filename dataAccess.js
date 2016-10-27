@@ -76,13 +76,13 @@ exports.deleteLowestBid = function(data, callback)
 exports.deleteHighestAsk = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price DESC LIMIT 1";
-
+        console.log(query);
         sqlBase.getSingleRecord(query, callback);
 }
 // This is actually match making. If this succeeds, it will inform user about successful trade!
 exports.deleteMatchedOrders = function(data, callback)
 {
-        var query = "DELETE t1,t2 FROM orderbook t1, orderbook t2 WHERE t1.product_name = '" + data.product +"' AND t1.product_name = t2.product_name AND t1.price = " + data.price + " AND t1.price = t2.price AND t1.order_type <> t2.order_type";
+        var query = "delete from microexchange.orderbook where order_id in ( select order_id from ( (select  order_id from microexchange.orderbook where price = " + data.price + " and product_name = '" + data.product +"' and order_type='SELL' limit 1) union (select  order_id from microexchange.orderbook where price = " + data.price + " and product_name = '" + data.product +"' and order_type='BUY' limit 1) )  as t1 )"
 
         sqlBase.getStaticData(query, callback);
 }

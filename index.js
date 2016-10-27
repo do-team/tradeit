@@ -93,29 +93,29 @@ exports.handler = function(event, context) {
                                                                 var totalOrders = '';
                                                                 _.forEach(countRows, function(value) {
                                                                     totalOrders = value;
-                                                                    if (totalOrders => market_depth) {
-
-
+                                                                    if (totalOrders > market_depth) {
                                                                         // SWITCH pro rozeznani, zda-li potrebujeme smazat na buy nebo sell side.
                                                                         switch (data.command) {
                                                                         case "BUY":
-                                                                        da.deleteLowestBid(data, function(err, delRows) {
-                                                                            if (err !== null) {
-                                                                                context.fail(err);
-                                                                            } else {
-                                                                                console.log('Irrelevant BUY orders found!');
-                                                                            }
-                                                                        });
+                                                                            da.deleteLowestBid(data, function(err, delRows) {
+                                                                                if (err !== null) {
+                                                                                    context.fail(err);
+                                                                                } else {
+                                                                                    console.log('Irrelevant BUY orders found!');
+                                                                                }
+                                                                            });
                                                                         break;
                                                                         case "SELL":
+                                                                            console.log('Amount of orders in the book: ' + totalOrders);
                                                                             da.deleteHighestAsk(data, function(err, delRows) {
-                                                                            if (err !== null) {
-                                                                                context.fail(err);
-                                                                            } else {
-                                                                                console.log('Irrelevant SELL orders found!');
-                                                                            }
-                                                                        });
-                                                                        break;
+                                                                                if (err !== null) {
+                                                                                    console.log(err + 'here');
+                                                                                    context.fail(err);
+                                                                                } else {
+                                                                                    console.log('Irrelevant SELL orders found!' + delRows);
+                                                                                }
+                                                                            });
+                                                                         break;
                                                                         }
                                                                         // Konec Switche.
 
