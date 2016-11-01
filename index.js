@@ -9,8 +9,12 @@ exports.handler = function(event, context) {
     if (event === null || event.text === null) {
         context.succeed('You sent nothing!'); // Basic protection, to rule out user sends nothing.
     }
-    if (event.text.toLowerCase() === 'products')
-        da.getProductNames(function(err, data) // Special command to display available products on market
+    else
+    // BIG SWITCH FOR SPECIAL COMMANDS
+    switch (event.text.toLowerCase()) {
+    case "products":
+
+            da.getProductNames(function(err, data) // Special command to display available products on market
             {
                 if (err !== null)
                     context.fail(err);
@@ -22,12 +26,16 @@ exports.handler = function(event, context) {
                     context.succeed('Available products: ' + result.toUpperCase());
                 }
             });
-    if (event.text.toLowerCase() === 'help') // Special command to display complex help text (TODO).
-        context.succeed('HELP recognised!');
-    if (event.text.toLowerCase() === 'test')
-        context.succeed('TEST OK');
-    else
-        var data = common.parseInputOrder(event.text);
+    break;
+    case "help":
+    context.succeed('HELP recognised!');
+    break;
+    case "test":
+    context.succeed('TEST OK');
+    break;
+    default:
+
+    var data = common.parseInputOrder(event.text);
     da.confirmCommand(data, function(err, commandRows) {
         if (err !== null)
             context.fail(err);
@@ -141,4 +149,8 @@ exports.handler = function(event, context) {
             }
         }
     });
+
+
+    }
+    // END OF BIG SWITCH !
 };

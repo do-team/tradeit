@@ -52,7 +52,7 @@ exports.getBidPrices = function(data, callback)
 exports.insertOrder = function(data, callback)
 {
         var query = "INSERT INTO orderbook (order_type, product_name, price) VALUES ('" + data.command + "','" + data.product + "', " + data.price + ")";
-
+         console.log(query);
         sqlBase.getStaticData(query, callback);
 }
 

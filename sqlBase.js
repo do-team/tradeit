@@ -24,10 +24,12 @@ exports.getStaticData = function(sqlQuery, callback)
                 callback(err,null);
               }
               else
-              //console.log('ROWS ' + rows);
+              console.log('ROWS ' + rows);
               //console.log('FIELDS ' + fields);
               callback(null, rows);}
+
       });
+
       connection.end();
 }
 
