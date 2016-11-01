@@ -33,14 +33,16 @@ exports.handler = function(event, context) {
     case "test":
     context.succeed('TEST OK');
     break;
+
     default:
 
     var data = common.parseInputOrder(event.text);
     da.confirmCommand(data, function(err, commandRows) {
         if (err !== null)
+            //console.log(err);
             context.fail(err);
         else {
-            if (commandRows == null) {
+            if (commandRows === null) {
                 context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
             } else {
                 da.confirmProductAvailable(data, function(err, dataRows) // Check, if product exists.
@@ -48,7 +50,7 @@ exports.handler = function(event, context) {
                         if (err !== null)
                             context.fail(err);
                         else {
-                            if (dataRows == null) {
+                            if (dataRows === null) {
                                 context.succeed('Product ' + data.product + ' not available! Please try /TRD PRODUCTS to see, what is available.');
                             } else {
                                 if (!data.price) { // If user send no price, it will list available orders for one of sides.
@@ -75,7 +77,7 @@ exports.handler = function(event, context) {
                                                     _.forEach(dataRows, function(value) {
                                                         result += value.price + ', ';
                                                     });
-                                                    context.succeed('You can sell ' + data.product + ' for these prices ' + result.toUpperCase());
+                                                    context.succeed('You can sell ' + data.product + ' for these prices: ' + result.toUpperCase());
                                                 }
                                             });
 

@@ -3,16 +3,18 @@ var sqlBase  = require('./sqlBase');
 // Any command is saved into global history for later troubleshooting etc.
 exports.historyRecord = function(event, callback)
 {
-        var query = "INSERT INTO history (full) VALUES ('"+event.text+"')";
-
-        sqlBase.getStaticData(query, callback);
+        var query = "INSERT INTO history (full) VALUES ('" + event.text + "')";
+        //console.log('History record: ' + query)
+        console.log ('History record...');
+        sqlBase.getSingleRecord(query, callback);
 }
 
 // This shall inform customer about available products on the market.
 exports.getProductNames = function(callback)
 {
         var query = "SELECT product_name FROM products";
-
+        //console.log(query);
+        console.log ('Listing available products...');
         sqlBase.getStaticData(query, callback);
 }
 
@@ -20,23 +22,23 @@ exports.getProductNames = function(callback)
 exports.confirmCommand = function(data, callback)
 {
         var query = "SELECT * FROM order_types WHERE type='" + data.command + "'";
-
-        sqlBase.getSingleRecord(query, callback);
+        console.log ('Confirming existence of order type...');
+        sqlBase.getStaticData(query, callback);
 }
 
 // Then we have to confirm, that product is really available.
 exports.confirmProductAvailable = function(data, callback)
 {
         var query = "SELECT * FROM products WHERE product_name='" + data.product + "'";
-
-        sqlBase.getSingleRecord(query, callback);
+        console.log ('Confirming existence of products...');
+        sqlBase.getStaticData(query, callback);
 }
 
 // When user sends no specific price, it shall give him list of available orders.
 exports.getAskPrices = function(data, callback)
 {
         var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='SELL' ORDER BY price ASC";
-
+        console.log ('Listing prices on SELL side...');
         sqlBase.getStaticData(query, callback);
 }
 
@@ -44,7 +46,7 @@ exports.getAskPrices = function(data, callback)
 exports.getBidPrices = function(data, callback)
 {
         var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='BUY' ORDER BY price ASC";
-
+        console.log ('Listing prices on BUY side...');
         sqlBase.getStaticData(query, callback);
 }
 
@@ -52,15 +54,16 @@ exports.getBidPrices = function(data, callback)
 exports.insertOrder = function(data, callback)
 {
         var query = "INSERT INTO orderbook (order_type, product_name, price) VALUES ('" + data.command + "','" + data.product + "', " + data.price + ")";
-         console.log(query);
-        sqlBase.getStaticData(query, callback);
+        // console.log(query);
+        console.log ('Inserting order to the orderbook...');
+        sqlBase.getSingleRecord(query, callback);
 }
 
 // After order successfully added, we have to check, if there are not so many orders, defined by variable market_depth (this is defined per product).
 exports.countOrders = function(data, callback)
 {
         var query = "SELECT COUNT(*) FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "'";
-
+        console.log ('Counting orders for market depth check...');
         sqlBase.getSingleRecord(query, callback);
 }
 
@@ -68,7 +71,7 @@ exports.countOrders = function(data, callback)
 exports.deleteLowestBid = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC LIMIT 1";
-
+        console.log ('Deleting irrelevant orders on BUY side...');
         sqlBase.getSingleRecord(query, callback);
 }
 
@@ -76,13 +79,14 @@ exports.deleteLowestBid = function(data, callback)
 exports.deleteHighestAsk = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price DESC LIMIT 1";
-        console.log(query);
+        //console.log(query);
+        console.log ('Deleting irrelevant orders on SELL side...');
         sqlBase.getSingleRecord(query, callback);
 }
 // This is actually match making. If this succeeds, it will inform user about successful trade!
 exports.deleteMatchedOrders = function(data, callback)
 {
         var query = "delete from microexchange.orderbook where order_id in ( select order_id from ( (select  order_id from microexchange.orderbook where price = " + data.price + " and product_name = '" + data.product +"' and order_type='SELL' limit 1) union (select  order_id from microexchange.orderbook where price = " + data.price + " and product_name = '" + data.product +"' and order_type='BUY' limit 1) )  as t1 )"
-
+        console.log ('Matchmaking...');
         sqlBase.getStaticData(query, callback);
 }

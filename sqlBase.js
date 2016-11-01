@@ -14,8 +14,8 @@ function connectionStart()
 exports.getStaticData = function(sqlQuery, callback)
     {
         var connection = connectionStart();
-        //console.log(callback);
-        //console.log(sqlQuery);
+        console.log(callback);
+        console.log(sqlQuery);
         connection.connect();
         connection.query(sqlQuery, function(err, rows, fields){
         if (callback) {
@@ -24,7 +24,7 @@ exports.getStaticData = function(sqlQuery, callback)
                 callback(err,null);
               }
               else
-              console.log('ROWS ' + rows);
+              //dconsole.log('ROWS ' + rows);
               //console.log('FIELDS ' + fields);
               callback(null, rows);}
 
@@ -46,8 +46,8 @@ exports.getSingleRecord = function(sqlQuery, callback)
                 }
                 else
                 {
-                 console.log('ROWS ' + rows);
-                 console.log('FIELDS ' + fields[0]);
+                 //console.log('ROWS ' + rows[0]);
+                 //console.log('FIELDS ' + fields);
                  callback(null, rows[0]);
                 }
         });
