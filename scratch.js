@@ -51,9 +51,10 @@ exports.handler = function(event, context) {
                                     // SWITCH pro rozeznani, zda-li potrebujeme smazat na buy nebo sell side.
                                     //switch (data.command) {
                                     //    case "BUY":
-                                            console.log('HERGOT');
-                                            da.deleteHighestAsk(data, function(err, delRows) {
+                      //                      console.log('HERGOT');
+                                            da.deleteLowestBid(data, function(err, delRows) {
                                                 if (err !== null) {
+                                                    console.log(err + 'ERROR');
                                                     context.fail(err);
                                                 } else {
                                                     console.log('Irrelevant BUY orders found!');

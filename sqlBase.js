@@ -18,28 +18,31 @@ exports.getStaticData = function(sqlQuery, callback)
         //console.log(sqlQuery);
         connection.connect();
         connection.query(sqlQuery, function(err, rows, fields){
-        if (callback) {
-              if (err)
-              {
-                callback(err,null);
-              }
-              else
-              //console.log('ROWS ' + rows);
-              //console.log('FIELDS ' + fields);
-              callback(null, rows);}
+            connection.end();
+            if (callback) {
+                  if (err)
+                  {
+                    console.log(err);
+                    callback(err,null);
+                  }
+                  else
+                  //console.log('ROWS ' + rows);
+                  //console.log('FIELDS ' + fields);
+                  callback(null, rows);}
 
       });
 
-      connection.end();
+
 }
 
 exports.getSingleRecord = function(sqlQuery, callback)
 {
         var connection = connectionStart();
         //console.log(callback);
-        // console.log(sqlQuery);
+        //console.log(sqlQuery);
         connection.connect();
         connection.query(sqlQuery, function(err, rows, fields){
+            connection.end();
                 if (err)
                 {
                   callback(err,null);
@@ -51,5 +54,5 @@ exports.getSingleRecord = function(sqlQuery, callback)
                  callback(null, rows[0]);
                 }
         });
-        connection.end();
+
 }

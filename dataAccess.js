@@ -69,7 +69,7 @@ exports.deleteLowestBid = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC LIMIT 1";
         console.log(query);
-        sqlBase.getSingleRecord(query, callback);
+        sqlBase.getStaticData(query, callback);
 }
 
 // If there are too many orders on sell side, it will delete highest price in the book.
