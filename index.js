@@ -43,12 +43,12 @@ exports.handler = function(event, context) {
             if (commandRows == null) {
                 context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
             } else {
-                da.confirmProductAvailable(data, function(err, dataRows) // Check, if product exists.
+                da.confirmProductAvailable(data, function(err, productRows) // Check, if product exists.
                     {
                         if (err !== null)
                             context.fail(err);
                         else {
-                            if (dataRows == null) {
+                            if (productRows == null) {
                                 context.succeed('Product ' + data.product + ' not available! Please try /TRD PRODUCTS to see, what is available.');
                             } else {
                                 if (!data.price) { // If user send no price, it will list available orders for one of sides.
@@ -82,7 +82,7 @@ exports.handler = function(event, context) {
                                             break;
                                     }
                                 } else {
-                                    da.insertOrder(data, function(err, dataRows) {
+                                    da.insertOrder(data, function(err, orderRows) {
                                         if (err !== null)
                                             context.fail(err);
                                         else {
