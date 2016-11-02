@@ -90,7 +90,7 @@ exports.handler = function(event, context) {
 
                                             da.deleteMatchedOrders(data, function(err, matchRows) {
 
-                                                _.forEach(matchRows, function(value) {
+                                                _.values(matchRows, function(value) {
                                                     if (value === 2) {
                                                         context.succeed(':money_with_wings: Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + '! :money_with_wings:');
                                                     } else {
@@ -99,7 +99,7 @@ exports.handler = function(event, context) {
                                                                 context.fail(err);
                                                             } else {
                                                                 var totalOrders = '';
-                                                                _.forEach(countRows, function(value) {
+                                                                _.values(countRows, function(value) {
                                                                     totalOrders = value;
                                                                     if (totalOrders > market_depth) {
                                                                         // SWITCH pro rozeznani, zda-li potrebujeme smazat na buy nebo sell side.
@@ -124,8 +124,10 @@ exports.handler = function(event, context) {
                                                                                 }
                                                                             });
                                                                          break;
+                                                                         default:
+                                                                         console.log('Something went wrong!');
                                                                         }
-                                                                        // Konec Switche.
+                                                                        // End of Switch..
 
                                                                     } else {
                                                                         console.log('No irrelevant orders.');

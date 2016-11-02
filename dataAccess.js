@@ -52,7 +52,7 @@ exports.getBidPrices = function(data, callback)
 exports.insertOrder = function(data, callback)
 {
         var query = "INSERT INTO orderbook (order_type, product_name, price) VALUES ('" + data.command + "','" + data.product + "', " + data.price + ")";
-         console.log(query);
+        //console.log(query);
         sqlBase.getStaticData(query, callback);
 }
 
@@ -68,7 +68,7 @@ exports.countOrders = function(data, callback)
 exports.deleteLowestBid = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC LIMIT 1";
-
+        console.log(query);
         sqlBase.getSingleRecord(query, callback);
 }
 
@@ -76,13 +76,13 @@ exports.deleteLowestBid = function(data, callback)
 exports.deleteHighestAsk = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price DESC LIMIT 1";
-        console.log(query);
+        //console.log(query);
         sqlBase.getSingleRecord(query, callback);
 }
 // This is actually match making. If this succeeds, it will inform user about successful trade!
 exports.deleteMatchedOrders = function(data, callback)
 {
-        var query = "delete from microexchange.orderbook where order_id in ( select order_id from ( (select  order_id from microexchange.orderbook where price = " + data.price + " and product_name = '" + data.product +"' and order_type='SELL' limit 1) union (select  order_id from microexchange.orderbook where price = " + data.price + " and product_name = '" + data.product +"' and order_type='BUY' limit 1) )  as t1 )";
-
+        //var query = "delete from microexchange.orderbook where order_id in ( select order_id from ( (select  order_id from microexchange.orderbook where price = " + data.price + " and product_name = '" + data.product +"' and order_type='SELL' limit 1) union (select  order_id from microexchange.orderbook where price = " + data.price + " and product_name = '" + data.product +"' and order_type='BUY' limit 1) )  as t1 )";
+        var query = "SELECT * from orderbook";
         sqlBase.getStaticData(query, callback);
 }

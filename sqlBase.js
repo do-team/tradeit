@@ -24,7 +24,7 @@ exports.getStaticData = function(sqlQuery, callback)
                 callback(err,null);
               }
               else
-              console.log('ROWS ' + rows);
+              //console.log('ROWS ' + rows);
               //console.log('FIELDS ' + fields);
               callback(null, rows);}
 
@@ -36,8 +36,8 @@ exports.getStaticData = function(sqlQuery, callback)
 exports.getSingleRecord = function(sqlQuery, callback)
 {
         var connection = connectionStart();
-        console.log(callback);
-        console.log(sqlQuery);
+        //console.log(callback);
+        // console.log(sqlQuery);
         connection.connect();
         connection.query(sqlQuery, function(err, rows, fields){
                 if (err)
@@ -46,8 +46,8 @@ exports.getSingleRecord = function(sqlQuery, callback)
                 }
                 else
                 {
-                 console.log('ROWS ' + rows);
-                 console.log('FIELDS ' + fields[0]);
+                 //console.log('ROWS ' + rows);
+                 //console.log('FIELDS ' + fields[0]);
                  callback(null, rows[0]);
                 }
         });

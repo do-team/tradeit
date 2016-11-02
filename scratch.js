@@ -35,58 +35,58 @@ exports.handler = function(event, context) {
         default:
 
             var data = common.parseInputOrder(event.text);
-            da.confirmCommand(data, function(err, commandRows) {
+
+            da.insertOrder(data, function(err, orderRows) {
                 if (err !== null)
                     context.fail(err);
-
-                if (commandRows == null)
-                    context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
-
-                da.confirmProductAvailable(data, function(err, productRows) // Check, if product exists.
-                    {
-                        if (err !== null)
+                else {
+                    console.log('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
+                    da.countOrders(data, function(err, countRows) {
+                        if (err !== null) {
                             context.fail(err);
+                        } else {
+                                var totalOrders = _.values(countRows);
+                                if (totalOrders > market_depth) {
+                                console.log('SANITY CHECK: market depth = ' + market_depth + ', counted orders = ' + totalOrders + ' and command is ' + data.command + '.');
+                                    // SWITCH pro rozeznani, zda-li potrebujeme smazat na buy nebo sell side.
+                                    //switch (data.command) {
+                                    //    case "BUY":
+                                            console.log('HERGOT');
+                                            da.deleteHighestAsk(data, function(err, delRows) {
+                                                if (err !== null) {
+                                                    context.fail(err);
+                                                } else {
+                                                    console.log('Irrelevant BUY orders found!');
+                                                }
+                                            });
 
-                        if (productRows == null)
-                            context.succeed('Product ' + data.product + ' does not exists. Try /TRD PRODUCTS to see, which products are available.');
+                                    //        break;
+                                    //    case "SELL":
+                                    //        console.log('Amount of orders in the book: ' + totalOrders);
+                                    //        da.deleteHighestAsk(data, function(err, delRows) {
+                                    //            if (err !== null) {
+                                    //                console.log(err + 'here');
+                                    //                context.fail(err);
+                                    //            } else {
+                                    //                console.log('Irrelevant SELL orders found!' + delRows);
+                                    //            }
+                                    //        });
+                                    //        break;
+                                    //    default:
+                                    //        console.log('Something went wrong!');
+                                    //}
+                                    // End of Switch..
 
+                                } else {
+                                    console.log('No irrelevant orders.');
+                                }
 
-
-
+                        }
+                        context.succeed('Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was successfully inserted into orderbook, but it was not matched.');
                     });
-                if (!data.price) {
-                    switch (data.command) {
-                        case "BUY":
-                            da.getAskPrices(data, function(err, dataRows) {
-                                if (err !== null)
-                                    context.fail(err);
-                                else {
-                                    var result = '';
-                                    _.forEach(dataRows, function(value) {
-                                        result += value.price + ', ';
-                                    });
-                                    context.succeed('You can buy ' + data.product + ' for these prices: ' + result.toUpperCase());
-                                }
-                            });
-                            break;
-                        case "SELL":
-                            da.getBidPrices(data, function(err, dataRows) {
-                                if (err !== null)
-                                    context.fail(err);
-                                else {
-                                    var result = '';
-                                    _.forEach(dataRows, function(value) {
-                                        result += value.price + ', ';
-                                    });
-                                    context.succeed('You can sell ' + data.product + ' for these prices ' + result.toUpperCase());
-                                }
-                            });
 
-                            break;
-                    }
                 }
-                context.succeed('END');
-
             });
+
     }
 };
