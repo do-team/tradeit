@@ -14,21 +14,21 @@ exports.displayProducts = function(err, data, context) // Special command to dis
         }
     }
 
-exports.incomingOrder = function(err, data) {
+exports.incomingOrder = function(err, data, context) {
     if (err !== null)
         context.fail(err);
     else {
-        console.log('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
+        context.succeed('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
     }
 }
 
-exports.incomingCommand = function(err, commandRows, context)
+exports.incomingCommand = function(err, commandRows, context) // Check if command exists.
     {
         if (err !== null)
             context.fail(err);
         else {
             if (commandRows == null) {
-                context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
+                if (context) context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
             }
         }
     }
@@ -39,20 +39,23 @@ exports.incomingProduct = function(err, productRows, context) // Check, if produ
             context.fail(err);
         else {
             if (productRows == null) {
-                context.succeed('Product ' + data.product + ' not available! Please try /TRD PRODUCTS to see, what is available.');
+                if (context) context.succeed('Product ' + data.product + ' not available! Please try /TRD PRODUCTS to see, what is available.');
             }
         }
     }
 
-exports.countingOrders = function(err, countRows, totalOrders) {
+exports.countingOrders = function(err, countRows, context) {
+    exports.totalOrders = totalOrders;
     if (err !== null)
         context.fail(err);
     else {
         var totalOrders = _.values(countRows);
+        exports.totalOrders = totalOrders;
+        console.log('here');
     }
 }
 
-exports.deleteLow = function(err, delRows) {
+exports.deleteLow = function(err, delRows, context) {
     if (err !== null)
         context.fail(err);
     else {
@@ -60,7 +63,7 @@ exports.deleteLow = function(err, delRows) {
     }
 }
 
-exports.deleteHigh = function(err, delRows) {
+exports.deleteHigh = function(err, delRows, context) {
     if (err !== null)
         context.fail(err);
     else {

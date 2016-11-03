@@ -7,7 +7,7 @@ var fun = require('./functions.js');
 
 exports.handler = function(event, context) {
 
-        da.historyRecord(event); // This is saving complete history of any command sent by user, whatever string he sends.
+        da.historyRecord(event, context); // This is saving complete history of any command sent by user, whatever string he sends.
 
         if (event === null || event.text === null) {
             context.succeed('You sent nothing!'); // Basic protection, to rule out user sends nothing.
@@ -15,8 +15,7 @@ exports.handler = function(event, context) {
             // BIG SWITCH FOR SPECIAL COMMANDS
             switch (event.text.toLowerCase()) {
                 case "products":
-                    da.getProductNames(fun.displayProducts,context); // Special command to display available products on market
-
+                    da.getProductNames(fun.displayProducts, context); // Special command to display available products on market
                     break;
                 case "help":
                     context.succeed('HELP recognised!');
@@ -36,24 +35,21 @@ exports.handler = function(event, context) {
                         context.data = data;
                         switch (data.command) {
                             case "BUY":
-                                console.log('Checking buy side.');
                                 da.getAskPrices(data, fun.showPrices, context);
-
                                 break;
                             case "SELL":
-
                                 da.getBidPrices(data, fun.showPrices, context);
-
                                 break;
                         }
                     return;
                     }
-                        da.insertOrder(data, fun.incomingOrder);
+                        da.insertOrder(data, fun.incomingOrder, context);
 
                         // Desired place for Match function
 
                         da.countOrders(data, fun.countingOrders, context);
-
+                        var totalOrders = fun.totalOrders;
+                        console.log(totalOrders);
                         if (totalOrders > market_depth) {
 
                             console.log('SANITY CHECK: market depth = ' + market_depth + ', counted orders = ' + totalOrders + ' and command is ' + data.command + '.');
@@ -61,12 +57,12 @@ exports.handler = function(event, context) {
                             switch (data.command) {
                                 case "BUY":
                                     console.log('Amount of orders in the book: ' + totalOrders);
-                                    da.deleteLowestBid(data, fun.deleteLow);
+                                    da.deleteLowestBid(data, fun.deleteLow, context);
 
                                     break;
                                 case "SELL":
                                     console.log('Amount of orders in the book: ' + totalOrders);
-                                    da.deleteHighestAsk(data, fun.deleteHigh);
+                                    da.deleteHighestAsk(data, fun.deleteHigh, context);
                                     break;
                             }
 
