@@ -8,8 +8,9 @@
     "start": "node index.js"
   },
   "dependencies": {
-      "aws-sdk": "2.3.11",
-      "mysql": "*",
-      "lodash": "*"
+    "async": "^2.1.2",
+    "aws-sdk": "2.3.11",
+    "lodash": "*",
+    "mysql": "*"
   }
 }

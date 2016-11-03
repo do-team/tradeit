@@ -49,9 +49,11 @@ exports.handler = function(event, context) {
                                 if (totalOrders > market_depth) {
                                 console.log('SANITY CHECK: market depth = ' + market_depth + ', counted orders = ' + totalOrders + ' and command is ' + data.command + '.');
                                     // SWITCH pro rozeznani, zda-li potrebujeme smazat na buy nebo sell side.
-                                    //switch (data.command) {
-                                    //    case "BUY":
-                      //                      console.log('HERGOT');
+                                    switch (data.command) {
+                                        case "BUY":
+                                            console.log('HERGOT'); //Tohle se jeste vypise, takze potud se vse zda byt OK.
+                                            //Od tohoto okamziku program naprosto IGNORUJE nasledujici pasaz. SQL dotaz se
+                                            //posklada spravne, ale nevrati se ani vysledek, ani error.
                                             da.deleteLowestBid(data, function(err, delRows) {
                                                 if (err !== null) {
                                                     console.log(err + 'ERROR');
@@ -61,21 +63,21 @@ exports.handler = function(event, context) {
                                                 }
                                             });
 
-                                    //        break;
-                                    //    case "SELL":
-                                    //        console.log('Amount of orders in the book: ' + totalOrders);
-                                    //        da.deleteHighestAsk(data, function(err, delRows) {
-                                    //            if (err !== null) {
-                                    //                console.log(err + 'here');
-                                    //                context.fail(err);
-                                    //            } else {
-                                    //                console.log('Irrelevant SELL orders found!' + delRows);
-                                    //            }
-                                    //        });
-                                    //        break;
-                                    //    default:
-                                    //        console.log('Something went wrong!');
-                                    //}
+                                            break;
+                                        case "SELL":
+                                            console.log('Amount of orders in the book: ' + totalOrders);
+                                            da.deleteHighestAsk(data, function(err, delRows) {
+                                                if (err !== null) {
+                                                    console.log(err + 'here');
+                                                    context.fail(err);
+                                                } else {
+                                                    console.log('Irrelevant SELL orders found!' + delRows);
+                                                }
+                                            });
+                                            break;
+                                        default:
+                                            console.log('Something went wrong!'); //Ani tohle se nevypise.
+                                    }
                                     // End of Switch..
 
                                 } else {

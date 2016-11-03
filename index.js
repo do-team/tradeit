@@ -91,6 +91,7 @@ exports.handler = function(event, context) {
                                             da.deleteMatchedOrders(data, function(err, matchRows) {
 
                                                 _.values(matchRows, function(value) {
+                                                    console.log(matchRows, _.values(matchRows))
                                                     if (value === 2) {
                                                         context.succeed(':money_with_wings: Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + '! :money_with_wings:');
                                                     } else {
