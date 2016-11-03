@@ -17,21 +17,23 @@ exports.getStaticData = function(sqlQuery, callback)
         //console.log(callback);
         //console.log(sqlQuery);
         connection.connect();
+        console.log('State 1 - before query');
         connection.query(sqlQuery, function(err, rows, fields){
-        if (callback) {
+        console.log('State 2 - inside query');
               if (err)
               {
                 console.log(err);
-                callback(err,null);
+                if (callback) callback(err,null);
               }
-              else
+              else {
               //console.log('ROWS ' + rows);
               //console.log('FIELDS ' + fields);
-              callback(null, rows);}
+              if (callback) callback(null, rows);
+              }
 
       });
-
-      connection.end();
+    console.log('State 3 - after query');
+    connection.end();
 }
 
 exports.getSingleRecord = function(sqlQuery, callback)

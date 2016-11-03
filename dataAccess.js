@@ -4,7 +4,7 @@ var sqlBase  = require('./sqlBase');
 exports.historyRecord = function(event, callback)
 {
         var query = "INSERT INTO history (full) VALUES ('"+event.text+"')";
-
+        console.log(query);
         sqlBase.getStaticData(query, callback);
 }
 
