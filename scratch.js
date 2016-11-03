@@ -48,7 +48,6 @@ exports.handler = function(event, context) {
                         }
                     return;
                     }
-                        context.data = data;
                         da.insertOrder(data, fun.incomingOrder);
 
                         // Desired place for Match function
