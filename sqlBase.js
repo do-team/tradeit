@@ -11,7 +11,7 @@ function connectionStart()
         return connection;
 }
 
-exports.getStaticData = function(sqlQuery, callback)
+exports.getStaticData = function(sqlQuery, callback, context)
     {
         var connection = connectionStart();
         //console.log(callback);
@@ -23,12 +23,12 @@ exports.getStaticData = function(sqlQuery, callback)
               if (err)
               {
                 console.log(err);
-                if (callback) callback(err,null);
+                if (callback) callback(err, null, context);
               }
               else {
               //console.log('ROWS ' + rows);
               //console.log('FIELDS ' + fields);
-              if (callback) callback(null, rows);
+              if (callback) callback(null, rows, context);
               }
 
       });
@@ -40,9 +40,10 @@ exports.getSingleRecord = function(sqlQuery, callback)
 {
         var connection = connectionStart();
         //console.log(callback);
-        //console.log(sqlQuery);
+
         connection.connect();
         connection.query(sqlQuery, function(err, rows, fields){
+                console.log(sqlQuery);
                 if (err)
                 {
                   callback(err,null);

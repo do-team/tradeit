@@ -9,19 +9,19 @@ exports.historyRecord = function(event, callback)
 }
 
 // This shall inform customer about available products on the market.
-exports.getProductNames = function(callback)
+exports.getProductNames = function(callback, context)
 {
         var query = "SELECT product_name FROM products";
 
-        sqlBase.getStaticData(query, callback);
+        sqlBase.getStaticData(query, callback, context);
 }
 
 // First we have to confirm, that order type exists. It can be BUY and SELL from the start, but more order types can be added.
-exports.confirmCommand = function(data, callback)
+exports.confirmCommand = function(data, callback, context)
 {
         var query = "SELECT * FROM order_types WHERE type='" + data.command + "'";
 
-        sqlBase.getSingleRecord(query, callback);
+        sqlBase.getSingleRecord(query, callback, context);
 }
 
 // Then we have to confirm, that product is really available.
@@ -33,19 +33,19 @@ exports.confirmProductAvailable = function(data, callback)
 }
 
 // When user sends no specific price, it shall give him list of available orders.
-exports.getAskPrices = function(data, callback)
+exports.getAskPrices = function(data, callback, context)
 {
         var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='SELL' ORDER BY price ASC";
 
-        sqlBase.getStaticData(query, callback);
+        sqlBase.getStaticData(query, callback, context);
 }
 
 // When user sends no specific price, it shall give him list of available orders.
-exports.getBidPrices = function(data, callback)
+exports.getBidPrices = function(data, callback, context)
 {
         var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='BUY' ORDER BY price ASC";
 
-        sqlBase.getStaticData(query, callback);
+        sqlBase.getStaticData(query, callback, context);
 }
 
 // Correctly defined order shall be added into right place in the database table.
