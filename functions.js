@@ -2,7 +2,7 @@ var _ = require('lodash');
 
 exports.displayProducts = function(err, data, context) // Special command to display available products on market
     {
-        console.log(data);
+        //console.log(data);
         if (err !== null)
             context.fail(err);
         else {
@@ -10,7 +10,7 @@ exports.displayProducts = function(err, data, context) // Special command to dis
             _.forEach(data, function(value) {
                 result += value.product_name + ', ';
             });
-            if (context) context.succeed('Available products: ' + result.toUpperCase());
+            context.succeed('Available products: ' + result.toUpperCase());
         }
     }
 
@@ -28,7 +28,7 @@ exports.incomingCommand = function(err, commandRows, context) // Check if comman
             context.fail(err);
         else {
             if (commandRows == null) {
-                if (context) context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
+                context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
             }
         }
     }

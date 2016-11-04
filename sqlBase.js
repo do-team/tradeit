@@ -12,27 +12,23 @@ function connectionStart()
 }
 
 exports.getStaticData = function(sqlQuery, callback, context)
-    {
+{
         var connection = connectionStart();
-        //console.log(callback);
-        //console.log(sqlQuery);
         connection.connect();
-        console.log('State 1 - before query');
+        console.log('State 1 - before query ' + connection.state);
         connection.query(sqlQuery, function(err, rows, fields){
-        console.log('State 2 - inside query');
+        console.log('State 2 - inside query ' + connection.state);
               if (err)
               {
                 console.log(err);
-                if (callback) callback(err, null, context);
+                callback(err, null, context);
               }
               else {
-              //console.log('ROWS ' + rows);
-              //console.log('FIELDS ' + fields);
-              if (callback) callback(null, rows, context);
+              callback(null, rows, context);
               }
 
       });
-    console.log('State 3 - after query');
+    console.log('State 3 - after query ' + connection.state);
     connection.end();
 }
 

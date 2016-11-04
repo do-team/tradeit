@@ -7,7 +7,7 @@ var fun = require('./functions.js');
 
 exports.handler = function(event, context) {
 
-        da.historyRecord(event, context); // This is saving complete history of any command sent by user, whatever string he sends.
+        da.historyRecord(event); // This is saving complete history of any command sent by user, whatever string he sends.
 
         if (event === null || event.text === null) {
             context.succeed('You sent nothing!'); // Basic protection, to rule out user sends nothing.
@@ -73,4 +73,8 @@ exports.handler = function(event, context) {
             }
             // End of BIG switch
         }
+
+
+
+        //context.succeed('hmm');
 };

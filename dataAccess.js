@@ -1,11 +1,20 @@
 var sqlBase  = require('./sqlBase');
+var sql2 = require('./sql2.js');
 
 // Any command is saved into global history for later troubleshooting etc.
-exports.historyRecord = function(event, callback, context)
+exports.historyRecord = function(event)
 {
-        var query = "INSERT INTO history (full) VALUES ('"+event.text+"')";
+        var query = "INSERT INTO history (full) VALUES ('" + event.text + "')";
+        //console.log(query);
+        sqlBase.getStaticData(query, null, null);
+}
+
+
+exports.historyRecordAlt = function(event, context)
+{
+        var query = "INSERT INTO history (full) VALUES ('" + event.text + "')";
         console.log(query);
-        sqlBase.getStaticData(query, callback, context);
+        sql2.executeScalar(query, context);
 }
 
 // This shall inform customer about available products on the market.
