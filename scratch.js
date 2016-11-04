@@ -15,13 +15,13 @@ exports.handler = function(event, context) {
             // BIG SWITCH FOR SPECIAL COMMANDS
             switch (event.text.toLowerCase()) {
                 case "products":
-                    da.getProductNames(fun.displayProducts, context); // Special command to display available products on market
+                    da.getProductNames(fun.displayProducts, context); // Special command to display available products on market.
                     break;
                 case "help":
-                    context.succeed('HELP recognised!');
+                    console.log('HELP recognised!'); // Future redirect to external file with nice HELP page.
                     break;
                 case "test":
-                    context.succeed('TEST OK');
+                    console.log('TEST OK'); // Only test.
                     break;
                 default:
 
