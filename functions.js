@@ -14,13 +14,14 @@ exports.displayProducts = function(err, data, context) // Special command to dis
         }
     }
 
-exports.incomingOrder = function(err, data, context) {
-    if (err !== null)
-        context.fail(err);
-    else {
-        context.succeed('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
+exports.incomingOrder = function(err, data, context)
+    {
+        if (err !== null)
+            context.fail(err);
+        else {
+            context.succeed('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
+        }
     }
-}
 
 exports.incomingCommand = function(err, commandRows, context) // Check if command exists.
     {
