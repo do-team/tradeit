@@ -11,6 +11,7 @@
     "async": "^2.1.2",
     "aws-sdk": "2.3.11",
     "lodash": "*",
-    "mysql": "*"
+    "mysql": "*",
+    "promise": "^7.1.1"
   }
 }
