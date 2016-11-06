@@ -9,7 +9,7 @@ exports.historyRecord = function(event)
 }
 
 // This shall inform customer about available products on the market.
-exports.getProductNames = function (callback, context) {
+exports.getProductNames = function () {
         var query = "SELECT product_name FROM products";
         // return promise
         return sqlBase.getStaticData(query);
