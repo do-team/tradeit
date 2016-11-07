@@ -135,7 +135,7 @@ exports.handler = function(event, context) {
                                                                     }
                                                                 });
                                                             }
-                                                            context.succeed('Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was successfully inserted into orderbook, but it was not matched.');
+                                                            console.log('Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was successfully inserted into orderbook, but it was not matched.');
                                                         });
                                                     }
                                                 });
