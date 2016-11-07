@@ -11,6 +11,25 @@ function connectionStart()
         return connection;
 }
 
+exports.getSyncData = function(sqlQuery, context, callback, skipCallback)
+{
+    var connection = connectionStart();
+    connection.connect();
+    console.log('State 1 - before query ' + connection.state);
+    connection.query(sqlQuery, function(err, rows, fields) {
+        console.log('State 2 - inside query ' + connection.state);
+        if (err) {
+            context.fail(err);
+        } else {
+            callback(rows, fields, context);
+            skipCallback(null,rows);
+        }
+    });
+    console.log('State 3 - after query ' + connection.state);
+    connection.end();
+}
+
+
 exports.getStaticData = function(sqlQuery, callback, context)
 {
         var connection = connectionStart();

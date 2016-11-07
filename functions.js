@@ -1,18 +1,18 @@
 var _ = require('lodash');
 
-exports.displayProducts = function(err, data, context) // Special command to display available products on market
-    {
-        //console.log(data);
-        if (err !== null)
-            context.fail(err);
-        else {
-            var result = '';
-            _.forEach(data, function(value) {
-                result += value.product_name + ', ';
-            });
-            context.succeed('Available products: ' + result.toUpperCase());
-        }
-    }
+exports.doNothing = function(rows, fields, context) // Special command to display available products on market
+{
+    // really do nothing
+}
+
+exports.displayProducts = function(rows, fields, context) // Special command to display available products on market
+{
+    var result = '';
+    _.forEach(rows, function(value) {
+        result += value.product_name + ', ';
+    });
+    context.succeed('Available products: ' + result.toUpperCase());
+}
 
 exports.incomingOrder = function(err, data, context)
     {

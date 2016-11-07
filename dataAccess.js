@@ -1,19 +1,19 @@
 var sqlBase  = require('./sqlBase');
 
 // Any command is saved into global history for later troubleshooting etc.
-exports.historyRecord = function(event)
+exports.historyRecord = function(event, context, callback, skipCallback)
 {
         var query = "INSERT INTO history (full) VALUES ('" + event.text + "')";
         //console.log(query);
-        sqlBase.getStaticData(query, null, null);
+        return sqlBase.getSyncData(query, context, callback, skipCallback);
 }
 
 // This shall inform customer about available products on the market.
-exports.getProductNames = function(callback, context)
+exports.getProductNames = function(context, callback, skipCallback)
 {
         var query = "SELECT product_name FROM products";
         console.log(query);
-        sqlBase.getStaticData(query, callback, context);
+        sqlBase.getSyncData(query, context, callback, skipCallback);
 }
 
 // First we have to confirm, that order type exists. It can be BUY and SELL from the start, but more order types can be added.

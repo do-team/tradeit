@@ -8,27 +8,25 @@ var async = require('async');
 
 
 exports.handler = function(event, context) {
-
-async.waterfall([
-    myFirstFunction,
-    mySecondFunction,
-    myLastFunction,
-], function (err, result) {
-    context.succeed(result);
-    // result now equals 'done'
-});
-function myFirstFunction(callback) {
-    da.historyRecord(event);
-    callback(null, 'one', 'two');
-}
-function mySecondFunction(arg1, arg2, callback) {
-    console.log(arg1, arg2); // arg1 now equals 'one' and arg2 now equals 'two'
-    callback(null, 'three');
-}
-function myLastFunction(arg1, callback) {
-    console.log(arg1);
-    // arg1 now equals 'three'
-    callback(null, 'four');
-}
-
+    async.series([
+        function (skipCallback) {
+            da.historyRecord(event, context, fun.doNothing, skipCallback);
+        },
+        function (skipCallback) {
+            switch (event.text.toLowerCase()) {
+                case "products":
+                    da.getProductNames(context, fun.displayProducts, skipCallback);
+                     // Special command to display available products on market.
+                    break;
+                case "help":
+                    console.log('HELP recognised!'); // Future redirect to external file with nice HELP page.
+                    break;
+                case "test":
+                    context.succeed('test');
+                    break;
+            }
+        },
+    ], function(err, results) {
+        context.succeed(results);
+    });
 }
