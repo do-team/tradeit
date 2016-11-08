@@ -11,6 +11,44 @@ function connectionStart()
         return connection;
 }
 
+
+
+exports.executeScalar = function(sqlQuery, callback)
+{
+    var connection = connectionStart();
+    connection.connect();
+    connection.query(sqlQuery, function(err, rows, fields) {
+        console.log('auth query ' + connection.state);
+        if (err) {
+            callback('error',null);
+        } else {
+            callback(null,'ok');
+        }
+        connection.end();
+    });
+
+}
+
+
+
+exports.executeQuery = function(sqlQuery, callback)
+{
+    var connection = connectionStart();
+    connection.connect();
+    connection.query(sqlQuery, function(err, rows) {
+        console.log('inside Execute query' + connection.state);
+        if (err) {
+            callback('error',null);
+        } else {
+            callback(null,'ok', rows);
+        }
+        connection.end();
+    });
+
+}
+
+
+
 exports.getSyncData = function(sqlQuery, context, callback, resultCallback)
 {
     var connection = connectionStart();

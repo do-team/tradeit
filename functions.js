@@ -6,6 +6,16 @@ exports.doNothing = function(rows, fields, context) // Special command to displa
     // really do nothing
 }
 
+
+exports.myDisplayProducts = function(rows) // Special command to display available products on market
+{
+    var result = '';
+    _.forEach(rows, function(value) {
+        result += value.product_name + ', ';
+    });
+    return result;
+}
+
 exports.displayProducts = function(rows, fields, context) // Special command to display available products on market
 {
     var result = '';
@@ -13,6 +23,7 @@ exports.displayProducts = function(rows, fields, context) // Special command to 
         result += value.product_name + ', ';
     });
     context.succeed('Available products: ' + result.toUpperCase());
+    return;
 }
 
 exports.incomingOrder = function(err, data, context)
@@ -27,8 +38,7 @@ exports.incomingOrder = function(err, data, context)
 exports.incomingCommand = function(commandRows, fields, context) // Check if command exists.
     {
             if (commandRows == null) {
-                //console.log (data);
-                context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
+                context.succeed('Order type ' + _.values(data.data) + ' not available! Please try /TRD HELP first!');
             }
             console.log(commandRows);
     }

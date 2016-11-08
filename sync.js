@@ -22,23 +22,22 @@ exports.handler = function(event, context) {
             switch (event.text.toLowerCase()) {
                 case "products":
                     da.getProductNames(context, fun.displayProducts, resultCallback);
-                    // Special command to display available products on market.
                     break;
                 case "help":
                     context.succeed('HELP recognised!'); // Future redirect to external file with nice HELP page.
                     break;
                 case "test":
-                    context.succeed('test');
+                    context.succeed('TEST OK');
                     break;
             }
-            resultCallback(null, 'Special commands.');
+            resultCallback(null, 'Special command not identified.');
         },
 
         function (resultCallback) {
         // 3. We have to confirm, if data.command does exists on the market.
             var data = common.parseInputOrder(event.text, context); // Now we got data.command, data.product and data.price.
             exports.data = data;
-            console.log(data);
+            //console.log(data);
             da.confirmCommand(data, context, fun.incomingCommand, resultCallback);
             resultCallback(null, 'Confirm command.');
         },
@@ -71,11 +70,11 @@ exports.handler = function(event, context) {
         },
 */
         function (resultCallback) {
-        resultCallback(null, 'test');
+        resultCallback(null, 'If I see this, I know it is not running synchroniously...');
         },
 
     ], function(err, results) {
-
+        if (err) context.fail(err);
         console.log(results);
     });
 }
