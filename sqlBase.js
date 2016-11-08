@@ -11,7 +11,7 @@ function connectionStart()
         return connection;
 }
 
-exports.getSyncData = function(sqlQuery, context, callback, skipCallback)
+exports.getSyncData = function(sqlQuery, context, callback, resultCallback)
 {
     var connection = connectionStart();
     connection.connect();
@@ -22,7 +22,7 @@ exports.getSyncData = function(sqlQuery, context, callback, skipCallback)
             context.fail(err);
         } else {
             callback(rows, fields, context);
-            skipCallback(null,rows);
+            console.log(callback);
         }
     });
     console.log('State 3 - after query ' + connection.state);

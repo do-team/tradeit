@@ -7,71 +7,76 @@ var fun = require('./functions.js');
 var async = require('async');
 
 
+
 exports.handler = function(event, context) {
 
-    var data = common.parseInputOrder(event.text); // Now we got data.command, data.product and data.price.
-
+    var data  = common.parseInputOrder(event.text, context); // Now we got data.command, data.product and data.price.
+    exports.data;
     console.log(data);
 
     async.series([
-        function (skipCallback) {
+        function (resultCallback) {
          // 1. Writing to history must happen first, before everything else.
-            da.historyRecord(event, context, fun.doNothing, skipCallback);
+            da.historyRecord(event, context, fun.doNothing, resultCallback);
+            resultCallback(null, 'History record.');
         },
 
-        function (skipCallback) {
+        function (resultCallback) {
          // 2. This switch must happen after history record. Program ends after this switch.
             switch (event.text.toLowerCase()) {
                 case "products":
-                    da.getProductNames(context, fun.displayProducts, skipCallback);
-                     // Special command to display available products on market.
+                    da.getProductNames(context, fun.displayProducts, resultCallback);
+                    // Special command to display available products on market.
                     break;
                 case "help":
-                    console.log('HELP recognised!'); // Future redirect to external file with nice HELP page.
+                    context.succeed('HELP recognised!'); // Future redirect to external file with nice HELP page.
                     break;
                 case "test":
                     context.succeed('test');
                     break;
             }
+            resultCallback(null, 'Special commands.');
         },
 
-        function (skipCallback) {
-        // 3. Next step is parsing of event to data array.
-            console.log('here');
-            // We have to confirm, if data.command does exists.
-            da.confirmCommand(data, context, fun.incomingCommand, skipCallback);
+        function (resultCallback) {
+        // 3. We have to confirm, if data.command does exists on the market.
+            da.confirmCommand(data, context, fun.incomingCommand, resultCallback);
+            resultCallback(null, 'Confirm command.');
         },
 /*
-        function (skipCallback) {
+        function (resultCallback) {
         // 5. Then we have to rule out, that user is sending nonexistent product name. If yes, program ends.
-            da.confirmProductAvailable(data, context, fun.incomingProduct, skipCallback);
+            da.confirmProductAvailable(data, context, fun.incomingProduct, resultCallback);
+            resultCallback(null, 'Confirm products.');
         },
 
-        function (skipCallback) {
+        function (resultCallback) {
         // 6. Now if user sends no price, we will tell him, what is available. Program ends after it.
             if (!data.price) {
                 context.data = data;
                 switch (data.command) {
                     case "BUY":
-                        da.getAskPrices(data, context, fun.showPrices, skipCallback);
+                        da.getAskPrices(data, context, fun.showPrices, resultCallback);
                         break;
                     case "SELL":
-                        da.getBidPrices(data, context, fun.showPrices, skipCallback);
+                        da.getBidPrices(data, context, fun.showPrices, resultCallback);
                         break;
                 }
             return;
             }
+            resultCallback(null, 'Show available prices on both sides.');
         },
 
-        function (skipCallback) {
-
+        function (resultCallback) {
+        resultCallback(null, 'test');
         },
 
-        function (skipCallback) {
-
+        function (resultCallback) {
+        resultCallback(null, 'test');
         },
 */
     ], function(err, results) {
-        context.succeed(results);
+
+        console.log(results);
     });
 }

@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var data = require('./sync.js');
 
 exports.doNothing = function(rows, fields, context) // Special command to display available products on market
 {
@@ -23,15 +24,13 @@ exports.incomingOrder = function(err, data, context)
         }
     }
 
-exports.incomingCommand = function(err, commandRows, context) // Check if command exists.
+exports.incomingCommand = function(commandRows, fields, context) // Check if command exists.
     {
-        if (err !== null)
-            context.fail(err);
-        else {
-            if (commandRows == null) {
+            if (commandRows !== null) {
+                console.log (data.price);
                 context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
             }
-        }
+            console.log(commandRows);
     }
 
 exports.incomingProduct = function(err, productRows, context) // Check, if product exists.

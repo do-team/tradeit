@@ -1,35 +1,35 @@
 var sqlBase  = require('./sqlBase');
 
 // Any command is saved into global history for later troubleshooting etc.
-exports.historyRecord = function(event, context, callback, skipCallback)
+exports.historyRecord = function(event, context, callback, resultCallback)
 {
         var query = "INSERT INTO history (full) VALUES ('" + event.text + "')";
         //console.log(query);
-        return sqlBase.getSyncData(query, context, callback, skipCallback);
+        return sqlBase.getSyncData(query, context, callback, resultCallback);
 }
 
 // This shall inform customer about available products on the market.
-exports.getProductNames = function(context, callback, skipCallback)
+exports.getProductNames = function(context, callback, resultCallback)
 {
         var query = "SELECT product_name FROM products";
         console.log(query);
-        sqlBase.getSyncData(query, context, callback, skipCallback);
+        sqlBase.getSyncData(query, context, callback, resultCallback);
 }
 
 // First we have to confirm, that order type exists. It can be BUY and SELL from the start, but more order types can be added.
-exports.confirmCommand = function(data, context, callback, skipCallback)
+exports.confirmCommand = function(data, context, callback, resultCallback)
 {
         var query = "SELECT * FROM order_types WHERE type='" + data.command + "'";
         console.log(query);
-        sqlBase.getSyncData(query, context, callback, skipCallback);
+        sqlBase.getSyncData(query, context, callback, resultCallback);
 }
 
 // Then we have to confirm, that product is really available.
-exports.confirmProductAvailable = function(data, context, callback, skipCallback)
+exports.confirmProductAvailable = function(data, context, callback, resultCallback)
 {
         var query = "SELECT * FROM products WHERE product_name='" + data.product + "'";
         console.log(query);
-        sqlBase.getSyncData(query, context, callback, skipCallback);
+        sqlBase.getSyncData(query, context, callback, resultCallback);
 }
 
 // When user sends no specific price, it shall give him list of available orders.

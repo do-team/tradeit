@@ -1,10 +1,10 @@
 
-exports.parseInputOrder = function(str) {
+exports.parseInputOrder = function(str, context) {
         var data = str.toUpperCase().split(' ');
 
         if(data.length > 3)
         {
-            console.log('Too many of arguments!');
+            context.succeed('Such a command! But not supported, too long. Try /TRD HELP first!');
             return {command: '', product: '', price: 0 };
         }
         return  {
