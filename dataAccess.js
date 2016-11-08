@@ -12,7 +12,7 @@ exports.historyRecord = function(event, context, callback, resultCallback)
 exports.getProductNames = function(context, callback, resultCallback)
 {
         var query = "SELECT product_name FROM products";
-        console.log(query);
+        //console.log(query);
         sqlBase.getSyncData(query, context, callback, resultCallback);
 }
 

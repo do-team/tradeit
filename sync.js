@@ -6,13 +6,9 @@ var market_depth = 5;
 var fun = require('./functions.js');
 var async = require('async');
 
-
-
 exports.handler = function(event, context) {
 
-    var data  = common.parseInputOrder(event.text, context); // Now we got data.command, data.product and data.price.
-    exports.data;
-    console.log(data);
+
 
     async.series([
         function (resultCallback) {
@@ -40,6 +36,9 @@ exports.handler = function(event, context) {
 
         function (resultCallback) {
         // 3. We have to confirm, if data.command does exists on the market.
+            var data = common.parseInputOrder(event.text, context); // Now we got data.command, data.product and data.price.
+            exports.data = data;
+            console.log(data);
             da.confirmCommand(data, context, fun.incomingCommand, resultCallback);
             resultCallback(null, 'Confirm command.');
         },
@@ -70,11 +69,11 @@ exports.handler = function(event, context) {
         function (resultCallback) {
         resultCallback(null, 'test');
         },
-
+*/
         function (resultCallback) {
         resultCallback(null, 'test');
         },
-*/
+
     ], function(err, results) {
 
         console.log(results);

@@ -26,8 +26,8 @@ exports.incomingOrder = function(err, data, context)
 
 exports.incomingCommand = function(commandRows, fields, context) // Check if command exists.
     {
-            if (commandRows !== null) {
-                console.log (data.price);
+            if (commandRows == null) {
+                //console.log (data);
                 context.succeed('Order type ' + data.command + ' not available! Please try /TRD HELP first!');
             }
             console.log(commandRows);
