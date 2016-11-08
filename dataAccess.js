@@ -17,19 +17,19 @@ exports.getProductNames = function(context, callback, skipCallback)
 }
 
 // First we have to confirm, that order type exists. It can be BUY and SELL from the start, but more order types can be added.
-exports.confirmCommand = function(data, callback, context)
+exports.confirmCommand = function(data, context, callback, skipCallback)
 {
         var query = "SELECT * FROM order_types WHERE type='" + data.command + "'";
         console.log(query);
-        sqlBase.getStaticData(query, callback, context);
+        sqlBase.getSyncData(query, context, callback, skipCallback);
 }
 
 // Then we have to confirm, that product is really available.
-exports.confirmProductAvailable = function(data, callback, context)
+exports.confirmProductAvailable = function(data, context, callback, skipCallback)
 {
         var query = "SELECT * FROM products WHERE product_name='" + data.product + "'";
         console.log(query);
-        sqlBase.getStaticData(query, callback, context);
+        sqlBase.getSyncData(query, context, callback, skipCallback);
 }
 
 // When user sends no specific price, it shall give him list of available orders.

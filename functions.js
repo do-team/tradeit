@@ -19,7 +19,7 @@ exports.incomingOrder = function(err, data, context)
         if (err !== null)
             context.fail(err);
         else {
-            context.succeed('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
+            console.log('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
         }
     }
 
