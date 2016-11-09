@@ -45,12 +45,8 @@ exports.showAskPrices = function(rows) {
         return 'You can BUY ' + _.values(data.data.product) + ' for these prices: ' + result;
 }
 
-exports.myOrder = function(err, data, context) {
-    if (err !== null)
-        context.fail(err);
-    else {
+exports.myOrder = function(data) {
         console.log('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
-    }
 }
 
 exports.countingOrders = function(err, countRows, context) {

@@ -16,7 +16,7 @@ exports.executeScalar = function(sqlQuery, callback)
     var connection = connectionStart();
     connection.connect();
     connection.query(sqlQuery, function(err, rows, fields) {
-        console.log('Inside Scalar query: ' + connection.state);
+        console.log('Inside scalar query: ' + connection.state);
         if (err) {
             callback('SQL error', null);
         } else {

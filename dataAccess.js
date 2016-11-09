@@ -79,9 +79,9 @@ exports.deleteHighestAsk = function(data, callback, context)
         sqlBase.getSyncData(query, callback, context);
 }
 // This is actually match making. If this succeeds, it will inform user about successful trade!
-exports.deleteMatchedOrders = function(data, callback, context)
+exports.deleteMatchedOrders = function(data, callback)
 {
         var query = "delete from microexchange.orderbook where order_id in ( select order_id from ( (select  order_id from microexchange.orderbook where price = " + data.price + " and product_name = '" + data.product +"' and order_type='SELL' limit 1) union (select  order_id from microexchange.orderbook where price = " + data.price + " and product_name = '" + data.product +"' and order_type='BUY' limit 1) )  as t1 )";
         console.log(query);
-        sqlBase.getSyncData(query, callback, context);
+        sqlBase.executeQuery(query, callback);
 }

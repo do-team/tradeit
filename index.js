@@ -42,8 +42,8 @@ exports.handler = function(event, context) {
             console.log('Step 3 - product list.');
             console.log(nextStep);
             if (arg1 == 'ok') {
-                var result = ('Available products: ' + fun.myDisplayProducts(rows));
-                context.succeed(result.toUpperCase());
+                var result = (fun.myDisplayProducts(rows));
+                context.succeed('Available products: ' + result.toUpperCase());
             } else
                 nextStep(null);
         },
@@ -126,6 +126,14 @@ exports.handler = function(event, context) {
             console.log('Step 10 - Insert valid order into orderbook.');
             console.log(nextStep);
             da.insertOrder(data, nextStep);
+            fun.myOrder(data);
+            //nextStep (null, 'skip', null);
+        },
+
+        function(nextStep) {
+            console.log('Step 11 - Matchmaking time!');
+            console.log(nextStep);
+            da.deleteMatchedOrders(data, nextStep);
         }
 
 
