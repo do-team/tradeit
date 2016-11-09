@@ -68,6 +68,7 @@ exports.data = data;
 
         function(arg1, rows, nextStep) {
             console.log('Step 7 - In case of nonexistent product, it should stop here.');
+            console.log(nextStep);
             if (arg1 == 'ok') {
                 result = fun.myIncomingProduct(rows);
                 if (result) context.succeed(result);
@@ -78,6 +79,7 @@ exports.data = data;
 
         function(nextStep) {
             console.log('Step 8 - In case of no price sent, it should do the check.')
+            console.log(nextStep);
             if (!data.price) {
                 switch (data.command) {
                     case "BUY":
@@ -95,6 +97,7 @@ exports.data = data;
 
         function(arg1, rows, nextStep) {
             console.log('Step 9 - Display prices on one of sides of orderbook.');
+            console.log(nextStep);
              if (!data.price) {
                 switch (data.command) {
                     case "BUY":
@@ -108,15 +111,15 @@ exports.data = data;
                             nextStep(null);
                         break;
                     default:
-                        console.log('gere');
                         nextStep(null, 'skip', null);
                 }
              return;
-             }
+             } else nextStep(null);
         },
 
         function(nextStep) {
-            console.log('Step 10 - Instert valid order into orderbook.');
+            console.log('Step 10 - Insert valid order into orderbook.');
+            console.log(nextStep);
             da.insertOrder(data, nextStep);
         }
 

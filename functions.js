@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var data = require('./index2.js');
+var data = require('./index.js');
 
 exports.doNothing = function(rows, fields, context) // Special command to display available products on market
     {
