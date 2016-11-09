@@ -32,27 +32,27 @@ exports.confirmMyProduct = function(data, callback)
 }
 
 // When user sends no specific price, it shall give him list of available orders.
-exports.getAskPrices = function(data, callback, context)
+exports.getAskPrices = function(data, callback)
 {
         var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='SELL' ORDER BY price ASC";
         console.log(query);
-        sqlBase.getSyncData(query, callback, context);
+        sqlBase.executeQuery(query, callback);
 }
 
 // When user sends no specific price, it shall give him list of available orders.
-exports.getBidPrices = function(data, callback, context)
+exports.getBidPrices = function(data, callback)
 {
-        var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='BUY' ORDER BY price ASC";
+        var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='BUY' ORDER BY price DESC";
         console.log(query);
-        sqlBase.getSyncData(query, callback, context);
+        sqlBase.executeQuery(query, callback);
 }
 
 // Correctly defined order shall be added into right place in the database table.
-exports.insertOrder = function(data, callback, context)
+exports.insertOrder = function(data, callback)
 {
         var query = "INSERT INTO orderbook (order_type, product_name, price) VALUES ('" + data.command + "','" + data.product + "', " + data.price + ")";
         console.log(query);
-        sqlBase.getSyncData(query, callback, context);
+        sqlBase.executeQuery(query, callback);
 }
 
 // After order successfully added, we have to check, if there are not so many orders, defined by variable market_depth (this is defined per product).

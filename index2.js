@@ -6,6 +6,9 @@ var fun = require('./functions.js');
 
 exports.handler = function(event, context) {
 
+var data = common.parseInputOrder(event.text); // Now we got data.command, data.product and data.price.
+exports.data = data;
+
     async.waterfall([
 
         function(nextStep) {
@@ -44,9 +47,6 @@ exports.handler = function(event, context) {
 
         function(nextStep) {
             console.log('Step 4 - Confirming existence of command.');
-            var data = common.parseInputOrder(event.text); // Now we got data.command, data.product and data.price.
-            exports.data = data;
-            console.log(data);
             da.confirmMyCommand(data, nextStep);
         },
 
@@ -55,25 +55,71 @@ exports.handler = function(event, context) {
             if (arg1 == 'ok') {
                 result = fun.myIncomingCommand(rows);
                 if (result) context.succeed(result);
-                nextStep(null, 'OK');
+                nextStep(null);
             } else
-                nextStep('Unknown critical error.');
+                nextStep('ERROR CODE 2');
         },
 
         function(nextStep) {
             console.log('Step 6 - Confirming existence of product.');
+            console.log(nextStep);
             da.confirmMyProduct(data, nextStep);
         },
 
         function(arg1, rows, nextStep) {
             console.log('Step 7 - In case of nonexistent product, it should stop here.');
             if (arg1 == 'ok') {
-                result = fun.confirmMyProduct(rows);
+                result = fun.myIncomingProduct(rows);
                 if (result) context.succeed(result);
-                nextStep(null, 'OK');
+                nextStep(null);
             } else
-                nextStep('Unknown critical error.');
+                nextStep('ERROR CODE 3');
+        },
+
+        function(nextStep) {
+            console.log('Step 8 - In case of no price sent, it should do the check.')
+            if (!data.price) {
+                switch (data.command) {
+                    case "BUY":
+                        da.getAskPrices(data, nextStep);
+                        break;
+                    case "SELL":
+                        da.getBidPrices(data, nextStep);
+                        break;
+                    default:
+                        nextStep(null, 'skip', null);
+                }
+            return;
+            } else nextStep(null);
+        },
+
+        function(arg1, rows, nextStep) {
+            console.log('Step 9 - Display prices on one of sides of orderbook.');
+             if (!data.price) {
+                switch (data.command) {
+                    case "BUY":
+                        result = fun.showAskPrices(rows);
+                            if (result) context.succeed(result);
+                            nextStep(null);
+                         break;
+                    case "SELL":
+                        result = fun.showBidPrices(rows);
+                            if (result) context.succeed(result);
+                            nextStep(null);
+                        break;
+                    default:
+                        console.log('gere');
+                        nextStep(null, 'skip', null);
+                }
+             return;
+             }
+        },
+
+        function(nextStep) {
+            console.log('Step 10 - Instert valid order into orderbook.');
+            da.insertOrder(data, nextStep);
         }
+
 
     ], function(err, result) {
         if (err)
