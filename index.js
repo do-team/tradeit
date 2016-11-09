@@ -6,18 +6,20 @@ var fun = require('./functions.js');
 
 exports.handler = function(event, context) {
 
-var data = common.parseInputOrder(event.text); // Now we got data.command, data.product and data.price.
-exports.data = data;
+    var data = common.parseInputOrder(event.text); // Now we got data.command, data.product and data.price.
+    exports.data = data;
 
     async.waterfall([
 
         function(nextStep) {
             console.log('Step 1 - Write into history');
+            console.log(nextStep);
             da.myHistoryRecord(event, nextStep);
         },
 
         function(arg1, nextStep) {
             console.log('Step 2 - Identifying special command.');
+            console.log(nextStep);
             if (arg1 == 'ok') {
                 switch (event.text.toLowerCase()) {
                     case "products":
@@ -38,6 +40,7 @@ exports.data = data;
 
         function(arg1, rows, nextStep) {
             console.log('Step 3 - product list.');
+            console.log(nextStep);
             if (arg1 == 'ok') {
                 var result = ('Available products: ' + fun.myDisplayProducts(rows));
                 context.succeed(result.toUpperCase());
@@ -47,17 +50,19 @@ exports.data = data;
 
         function(nextStep) {
             console.log('Step 4 - Confirming existence of command.');
+            console.log(nextStep);
             da.confirmMyCommand(data, nextStep);
         },
 
         function(arg1, rows, nextStep) {
             console.log('Step 5 - In case of nonexistent command, it should stop here.');
+            console.log(nextStep);
             if (arg1 == 'ok') {
                 result = fun.myIncomingCommand(rows);
                 if (result) context.succeed(result);
                 nextStep(null);
             } else
-                nextStep('ERROR CODE 2');
+                nextStep(null);
         },
 
         function(nextStep) {
@@ -74,7 +79,7 @@ exports.data = data;
                 if (result) context.succeed(result);
                 nextStep(null);
             } else
-                nextStep('ERROR CODE 3');
+                nextStep(null);
         },
 
         function(nextStep) {
@@ -91,30 +96,30 @@ exports.data = data;
                     default:
                         nextStep(null, 'skip', null);
                 }
-            return;
-            } else nextStep(null);
+                return;
+            } else nextStep(null, 'skip', null);
         },
 
         function(arg1, rows, nextStep) {
             console.log('Step 9 - Display prices on one of sides of orderbook.');
             console.log(nextStep);
-             if (!data.price) {
+            if (!data.price) {
                 switch (data.command) {
                     case "BUY":
                         result = fun.showAskPrices(rows);
-                            if (result) context.succeed(result);
-                            nextStep(null);
-                         break;
+                        if (result) context.succeed(result);
+                        nextStep(null);
+                        break;
                     case "SELL":
                         result = fun.showBidPrices(rows);
-                            if (result) context.succeed(result);
-                            nextStep(null);
+                        if (result) context.succeed(result);
+                        nextStep(null);
                         break;
                     default:
                         nextStep(null, 'skip', null);
                 }
-             return;
-             } else nextStep(null);
+                return;
+            } else nextStep(null);
         },
 
         function(nextStep) {
