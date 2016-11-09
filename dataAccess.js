@@ -26,7 +26,13 @@ exports.getMyProductNames = function(callback)
         sqlBase.executeQuery(query, callback);
 }
 
-
+// First we have to confirm, that order type exists. It can be BUY and SELL from the start, but more order types can be added.
+exports.confirmMyCommand = function(data, callback)
+{
+        var query = "SELECT * FROM order_types WHERE type='" + data.command + "'";
+        console.log(query);
+        sqlBase.executeQuery(query, callback);
+}
 
 // This shall inform customer about available products on the market.
 exports.getProductNames = function(context, callback, resultCallback)

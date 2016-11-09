@@ -6,11 +6,9 @@ var fun = require('./functions.js');
 
 exports.handler = function(event, context) {
 
-
-
     async.waterfall([
 
-            (nextStep) => {
+            function (nextStep) {
                     console.log('Step 1 - Write into history');
                     da.myHistoryRecord(event, nextStep);
              },
@@ -21,32 +19,56 @@ exports.handler = function(event, context) {
                  {
                     switch (event.text.toLowerCase()) {
                             case "products":
+                            //context.succeed('Products recognised!' );
                                 da.getMyProductNames(nextStep);
                             break;
                             case "help":
-                                //nextStep(null, 'HELP recognised!' ); // Future redirect to external file with nice HELP page.
                                 context.succeed('HELP recognised!' );
                                 break;
                             case "test":
                                 context.succeed('TEST OK');
                             break;
+                            default:
+                                nextStep(null, 'skip', null);
                     }
                  }
                  else
-                    nextStep('ERROOOORR', null);
+                    nextStep('Special command failed.', null);
              },
 
-             (arg1, rows, nextStep) => {
+             function (arg1, rows, nextStep) {
                 console.log('Step 3 ');
                 if(arg1 == 'ok')
                 {
-                    var result = fun.myDisplayProducts(rows);
-                    nextStep(null, result);
+                    var result = ('Available products: ' + fun.myDisplayProducts(rows));
+                    context.succeed(result.toUpperCase());
                 }
                 else
-                    nextStep('error', null);
+                    nextStep(null);
 
-             }
+             },
+
+             function (nextStep) {
+                 console.log('Step 4 ' + event.text);
+                 var data = common.parseInputOrder(event.text); // Now we got data.command, data.product and data.price.
+                 exports.data = data;
+                 console.log(data);
+                 da.confirmMyCommand(data, nextStep);
+             },
+
+             function (arg1, rows, nextStep) {
+                 console.log('Step 5 ');
+                 if(arg1 == 'ok')
+                 {
+                     result = fun.myIncomingCommand(rows);
+                     if (result) context.succeed(result);
+                     nextStep(null, 'OK');
+                 }
+                 else
+                     nextStep(null);
+
+              }
+
 
     ], function (err, result) {
         if (err)

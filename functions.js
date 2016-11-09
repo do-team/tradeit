@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var data = require('./sync.js');
+var data = require('./index2.js');
 
 exports.doNothing = function(rows, fields, context) // Special command to display available products on market
 {
@@ -15,6 +15,14 @@ exports.myDisplayProducts = function(rows) // Special command to display availab
     });
     return result;
 }
+
+exports.myIncomingCommand = function(rows) // Check if command exists.
+    {
+            if (rows.length == 0) {
+                return 'Order type ' + _.values(data.data) + ' not available! Please try /TRD HELP first!';
+            }
+            else return null;
+    }
 
 exports.displayProducts = function(rows, fields, context) // Special command to display available products on market
 {

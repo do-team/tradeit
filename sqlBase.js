@@ -38,9 +38,9 @@ exports.executeQuery = function(sqlQuery, callback)
     connection.query(sqlQuery, function(err, rows) {
         console.log('inside Execute query' + connection.state);
         if (err) {
-            callback('error',null);
+            callback('SQL error', null);
         } else {
-            callback(null,'ok', rows);
+            callback(null, 'ok', rows);
         }
         connection.end();
     });
@@ -59,7 +59,7 @@ exports.getSyncData = function(sqlQuery, context, callback, resultCallback)
         if (err) {
             context.fail(err);
         } else {
-            callback(rows, fields, context);
+            if (callback) callback(rows, fields, context);
             console.log(callback);
         }
     });
