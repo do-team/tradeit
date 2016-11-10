@@ -129,14 +129,14 @@ exports.handler = function(event, context) {
             console.log('Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' successfully inserted!');
             nextStep(null);
         },
-/*
+
         function(nextStep) {
             console.log('Step 11 - Matchmaking time!');
             console.log(nextStep);
             da.deleteMatchedOrders(data, nextStep);
-            nextStep(null, 'Ordermatch');
+            //nextStep(null, 'Ordermatch');
         },
-
+/*
         function(nextStep) {
             console.log('Step 12 - Counting order, maybe there are too many of them.')
 
