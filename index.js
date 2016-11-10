@@ -1,6 +1,6 @@
 var da = require('./dataAccess');
 var common = require('./common');
-var fun = require('./resulteval.js');
+var fun = require('./functions.js');
 var async = require('async');
 var _ = require('lodash');
 var market_depth = 5;
@@ -133,21 +133,27 @@ exports.handler = function(event, context) {
             console.log(nextStep);
             console.log('Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' successfully inserted!');
             da.insertOrder(data, nextStep);
-            //nextStep();
         },
 
         function(arg1, rows, nextStep) {
-            console.log('Step 11 - Matchmaking time!');
+            console.log('Step 11A - Matchmaking time!');
             console.log(nextStep);
             da.deleteMatchedOrders(data, nextStep);
-            //nextStep();
+        },
+
+        function(arg1, rows, nextStep) {
+            console.log('Step 11B - Was there a trade?!');
+            console.log(nextStep);
+            var match = rows.affectedRows;
+            if (match == 2)
+                context.succeed(':money_with_wings: Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + ' EUR! :money_with_wings:');
+            else nextStep(null, 'ok', null);
         },
 
         function(arg1, rows, nextStep) {
             console.log('Step 12 - Counting order, maybe there are too many of them.')
             console.log(nextStep);
             da.countOrders(data, nextStep);
-            //nextStep();
         },
 
         function(arg1, rows, nextStep) {
@@ -170,24 +176,23 @@ exports.handler = function(event, context) {
                         nextStep(null);
                 }
                 return;
-            } else nextStep(null, 'Your order was entered into orderbook, but not matched.');
-        }
-        /*
-                function(nextStep) {
-                    console.log('Step 14 - Deleting irrelevant orders, if there are any.')
-                    //nextStep(null);
-                },
+            } else nextStep(null, 'relevant', null);
+        },
 
-                function(nextStep) {
-                    console.log('Step 15 - Final check.')
-                    //nextStep();
-                }
-        */
+        function(arg1, rows, nextStep) {
+        console.log(arg1);
+        console.log('Step 14 - Final check.')
+        if (arg1 == 'relevant')
+            nextStep(null, 'Thank you! Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was saved to the orderbook!');
+            else {
+                nextStep(null, 'Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was accepted. However it broke a limit of market depth, so irrelevant orders were automatically deleted.');
+            }
+        }
+
     ], function(err, result) {
         if (err)
-            console.log(err);
-        console.log(result);
-        context.succeed(result + ' = END.');
+            context.fail(err);
+        context.succeed(result);
     });
 
 }
