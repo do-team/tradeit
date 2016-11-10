@@ -147,21 +147,23 @@ exports.handler = function(event, context) {
         function(arg1, rows, nextStep) {
             console.log('Step 13 - Evaluating amount of orders, deleting irrelevant, if found.')
             var totalOrders = _.values(rows);
+            var irrelevantOrders = totalOrders - market_depth;
             console.log(totalOrders);
             if (totalOrders > market_depth) {
                 switch (data.command) {
                     case "BUY":
-                        console.log('Amount of orders in the book: ' + totalOrders);
+                        console.log('Irrelevant orders on buy side: ' + irrelevantOrders);
                         da.deleteLowestBid(data, nextStep);
                         break;
                     case "SELL":
-                        console.log('Amount of orders in the book: ' + totalOrders);
+                        console.log('Irrelevant orders on sell side: ' + irrelevantOrders);
                         da.deleteHighestAsk(data, nextStep);
                         break;
                 }
 
             }
-            nextStep(null);
+            else nextStep(null);
+            //nextStep(null);
         }
         /*
                 function(nextStep) {

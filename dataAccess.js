@@ -64,7 +64,7 @@ exports.countOrders = function(data, callback)
 }
 
 // If there are too many orders on buy side, it will delete lowest price order in the book.
-exports.deleteLowestBid = function(data, callback, context)
+exports.deleteLowestBid = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC LIMIT 1";
         console.log(query);
@@ -72,7 +72,7 @@ exports.deleteLowestBid = function(data, callback, context)
 }
 
 // If there are too many orders on sell side, it will delete highest price in the book.
-exports.deleteHighestAsk = function(data, callback, context)
+exports.deleteHighestAsk = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price DESC LIMIT 1";
         console.log(query);
