@@ -126,8 +126,8 @@ exports.handler = function(event, context) {
             console.log('Step 10 - Insert valid order into orderbook.');
             console.log(nextStep);
             da.insertOrder(data, nextStep);
-            console.log('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
-            nextStep();
+            console.log('Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' successfully inserted!');
+            nextStep(null);
         },
 /*
         function(nextStep) {
