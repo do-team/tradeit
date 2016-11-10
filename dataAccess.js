@@ -60,7 +60,7 @@ exports.countOrders = function(data, callback)
 {
         var query = "SELECT COUNT(*) FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "'";
         console.log(query);
-        sqlBase.executeQuery(query, callback);
+        sqlBase.executeSingle(query, callback);
 }
 
 // If there are too many orders on buy side, it will delete lowest price order in the book.
@@ -68,7 +68,7 @@ exports.deleteLowestBid = function(data, callback, context)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC LIMIT 1";
         console.log(query);
-        sqlBase.getSyncData(query, callback, context);
+        sqlBase.executeQuery(query, callback);
 }
 
 // If there are too many orders on sell side, it will delete highest price in the book.
@@ -76,7 +76,7 @@ exports.deleteHighestAsk = function(data, callback, context)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price DESC LIMIT 1";
         console.log(query);
-        sqlBase.getSyncData(query, callback, context);
+        sqlBase.executeQuery(query, callback);
 }
 
 // This is actually match making. If this succeeds, it will inform user about successful trade!

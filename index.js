@@ -1,7 +1,9 @@
 var da = require('./dataAccess');
 var common = require('./common');
-var fun = require('./functions.js');
+var fun = require('./resulteval.js');
 var async = require('async');
+var _ = require('lodash');
+var market_depth = 5;
 
 exports.handler = function(event, context) {
 
@@ -143,23 +145,35 @@ exports.handler = function(event, context) {
         },
 
         function(arg1, rows, nextStep) {
-            console.log('Step 13 - Evaluating amount of orders')
-            console.log(rows);
-            var totalOrders = fun.countingOrders(rows);
+            console.log('Step 13 - Evaluating amount of orders, deleting irrelevant, if found.')
+            var totalOrders = _.values(rows);
             console.log(totalOrders);
-            //nextStep(null);
-        }
-/*
-        function(nextStep) {
-            console.log('Step 14 - Deleting irrelevant orders, if there are any.')
-            //nextStep(null);
-        },
+            if (totalOrders > market_depth) {
+                switch (data.command) {
+                    case "BUY":
+                        console.log('Amount of orders in the book: ' + totalOrders);
+                        da.deleteLowestBid(data, nextStep);
+                        break;
+                    case "SELL":
+                        console.log('Amount of orders in the book: ' + totalOrders);
+                        da.deleteHighestAsk(data, nextStep);
+                        break;
+                }
 
-        function(nextStep) {
-            console.log('Step 15 - Final check.')
-            //nextStep();
+            }
+            nextStep(null);
         }
-*/
+        /*
+                function(nextStep) {
+                    console.log('Step 14 - Deleting irrelevant orders, if there are any.')
+                    //nextStep(null);
+                },
+
+                function(nextStep) {
+                    console.log('Step 15 - Final check.')
+                    //nextStep();
+                }
+        */
     ], function(err, result) {
         if (err)
             console.log(err);

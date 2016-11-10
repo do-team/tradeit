@@ -47,11 +47,8 @@ exports.showAskPrices = function(rows) {
 
 exports.countingOrders = function(rows) {
         var totalOrders = _.values(rows);
-        console.log(rows + 'there');
-        console.log(totalOrders + 'here');
         exports.totalOrders = totalOrders;
 }
-
 
 exports.deleteLow = function(err, delRows, context) {
     if (err !== null)
