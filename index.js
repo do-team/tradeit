@@ -126,21 +126,41 @@ exports.handler = function(event, context) {
             console.log('Step 10 - Insert valid order into orderbook.');
             console.log(nextStep);
             da.insertOrder(data, nextStep);
-            fun.myOrder(data);
-            //nextStep (null, 'skip', null);
+            console.log('Order successfully inserted! ' + data.command + ' ' + data.product + ' ' + data.price);
+            nextStep();
         },
-
+/*
         function(nextStep) {
             console.log('Step 11 - Matchmaking time!');
             console.log(nextStep);
             da.deleteMatchedOrders(data, nextStep);
+            nextStep(null, 'Ordermatch');
+        },
+
+        function(nextStep) {
+            console.log('Step 12 - Counting order, maybe there are too many of them.')
+
+            da.countOrders(data, nextStep);
+            var totalOrders = fun.totalOrders;
+            console.log(totalOrders);
+
+            nextStep(null)
+        },
+
+        function(nextStep) {
+            console.log('Step 13 - Deleting irrelevant orders, if there are any.')
+            nextStep(null);
+        },
+
+        function(nextStep) {
+            console.log('Step 14 - Final check.')
+            nextStep();
         }
-
-
+*/
     ], function(err, result) {
         if (err)
             console.log(err);
-        context.succeed(result);
+        context.succeed(result + ' = END.');
     });
 
 }
