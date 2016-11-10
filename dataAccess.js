@@ -52,7 +52,7 @@ exports.insertOrder = function(data, callback)
 {
         var query = "INSERT INTO orderbook (order_type, product_name, price) VALUES ('" + data.command + "','" + data.product + "', " + data.price + ")";
         console.log(query);
-        sqlBase.executeQuery(query, callback);
+        sqlBase.executeSingle(query, callback);
 }
 
 // After order successfully added, we have to check, if there are not so many orders, defined by variable market_depth (this is defined per product).
