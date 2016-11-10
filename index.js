@@ -1,8 +1,7 @@
 var da = require('./dataAccess');
 var common = require('./common');
-var async = require('async');
 var fun = require('./functions.js');
-
+var async = require('async');
 
 exports.handler = function(event, context) {
 
@@ -134,27 +133,31 @@ exports.handler = function(event, context) {
             console.log('Step 11 - Matchmaking time!');
             console.log(nextStep);
             da.deleteMatchedOrders(data, nextStep);
-            //nextStep(null, 'Ordermatch');
-        },
-/*
-        function(nextStep) {
-            console.log('Step 12 - Counting order, maybe there are too many of them.')
-
-            da.countOrders(data, nextStep);
-            var totalOrders = fun.totalOrders;
-            console.log(totalOrders);
-
-            nextStep(null)
-        },
-
-        function(nextStep) {
-            console.log('Step 13 - Deleting irrelevant orders, if there are any.')
             nextStep(null);
         },
 
         function(nextStep) {
-            console.log('Step 14 - Final check.')
-            nextStep();
+            console.log('Step 12 - Counting order, maybe there are too many of them.')
+            console.log(nextStep);
+            da.countOrders(data, nextStep);
+        },
+
+        function(arg1, rows, nextStep) {
+            console.log('Step 13 - Evaluating amount of orders')
+            console.log(rows);
+            var totalOrders = fun.countingOrders(rows);
+            console.log(totalOrders);
+            //nextStep(null);
+        }
+/*
+        function(nextStep) {
+            console.log('Step 14 - Deleting irrelevant orders, if there are any.')
+            //nextStep(null);
+        },
+
+        function(nextStep) {
+            console.log('Step 15 - Final check.')
+            //nextStep();
         }
 */
     ], function(err, result) {

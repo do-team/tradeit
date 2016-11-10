@@ -34,7 +34,7 @@ exports.showBidPrices = function(rows) {
         _.forEach(rows, function(value) {
             result += value.price + ', ';
         });
-        return 'You can SELL ' + _.values(data.data.product) + ' for these prices: ' + result;
+        return 'You can SELL ' + data.data.product + ' for these prices: ' + result;
 }
 
 exports.showAskPrices = function(rows) {
@@ -42,18 +42,16 @@ exports.showAskPrices = function(rows) {
         _.forEach(rows, function(value) {
             result += value.price + ', ';
         });
-        return 'You can BUY ' + _.values(data.data.product) + ' for these prices: ' + result;
+        return 'You can BUY ' + data.data.product + ' for these prices: ' + result;
 }
 
-exports.countingOrders = function(err, countRows, context) {
-    exports.totalOrders = totalOrders;
-    if (err !== null)
-        context.fail(err);
-    else {
-        var totalOrders = _.values(countRows);
+exports.countingOrders = function(rows) {
+        var totalOrders = _.values(rows);
+        console.log(rows + 'there');
+        console.log(totalOrders + 'here');
         exports.totalOrders = totalOrders;
-    }
 }
+
 
 exports.deleteLow = function(err, delRows, context) {
     if (err !== null)
