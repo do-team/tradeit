@@ -4,7 +4,7 @@ var sqlBase  = require('./sqlBase');
 exports.myHistoryRecord = function(event, callback)
 {
         var query = "INSERT INTO history (full) VALUES ('" + event.text + "')";
-        ////console.log(query);
+        //console.log(query);
         return sqlBase.executeScalar(query, callback);
 }
 
@@ -12,6 +12,7 @@ exports.myHistoryRecord = function(event, callback)
 exports.getMyProductNames = function(callback)
 {
         var query = "SELECT product_name FROM products";
+        //console.log(query);
         sqlBase.executeQuery(query, callback);
 }
 

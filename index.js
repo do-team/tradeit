@@ -13,6 +13,7 @@ exports.handler = function(event, context) {
     async.waterfall([
 
         function(nextStep) {
+            //var arg1 = 'ok';
             //console.log('Step 1 - Write into history');
             //console.log(nextStep);
             da.myHistoryRecord(event, nextStep);
