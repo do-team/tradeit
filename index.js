@@ -14,14 +14,14 @@ exports.handler = function(event, context) {
 
         function(nextStep) {
             //var arg1 = 'ok';
-            //console.log('Step 1 - Write into history');
-            //console.log(nextStep);
+            console.log('Step 1 - Write into history');
+            console.log(nextStep);
             da.myHistoryRecord(event, nextStep);
         },
 
         function(arg1, nextStep) {
-            //console.log('Step 2 - Identifying special command.');
-            //console.log(nextStep);
+            console.log('Step 2 - Identifying special command.');
+            console.log(nextStep);
             if (arg1 == 'ok') {
                 switch (event.text.toLowerCase()) {
                     case "products":
@@ -41,9 +41,9 @@ exports.handler = function(event, context) {
         },
 
         function(arg1, rows, nextStep) {
-            //console.log('Step 3 - product list.');
-            //console.log(arg1);
-            //console.log(nextStep);
+            console.log('Step 3 - product list.');
+            console.log(arg1);
+            console.log(nextStep);
             if (arg1 == 'ok') {
                 var result = (fun.myDisplayProducts(rows));
                 context.succeed('Available products: ' + result.toUpperCase());
@@ -52,15 +52,15 @@ exports.handler = function(event, context) {
         },
 
         function(nextStep) {
-            //console.log('Step 4 - Confirming existence of command.');
-            //console.log(nextStep);
+            console.log('Step 4 - Confirming existence of command.');
+            console.log(nextStep);
             da.confirmMyCommand(data, nextStep);
         },
 
         function(arg1, rows, nextStep) {
-            //console.log('Step 5 - In case of nonexistent command, it should stop here.');
-            //console.log(arg1);
-            //console.log(nextStep);
+            console.log('Step 5 - In case of nonexistent command, it should stop here.');
+            console.log(arg1);
+            console.log(nextStep);
             if (arg1 == 'ok') {
                 result = fun.myIncomingCommand(rows);
                 if (result) context.succeed(result);
@@ -70,15 +70,15 @@ exports.handler = function(event, context) {
         },
 
         function(nextStep) {
-            //console.log('Step 6 - Confirming existence of product.');
-            //console.log(nextStep);
+            console.log('Step 6 - Confirming existence of product.');
+            console.log(nextStep);
             da.confirmMyProduct(data, nextStep);
         },
 
         function(arg1, rows, nextStep) {
-            //console.log('Step 7 - In case of nonexistent product, it should stop here.');
-            //console.log(arg1);
-            //console.log(nextStep);
+            console.log('Step 7 - In case of nonexistent product, it should stop here.');
+            console.log(arg1);
+            console.log(nextStep);
             if (arg1 == 'ok') {
                 result = fun.myIncomingProduct(rows);
                 if (result) context.succeed(result);
@@ -88,8 +88,8 @@ exports.handler = function(event, context) {
         },
 
         function(nextStep) {
-            //console.log('Step 8 - In case of no price sent, it should do the check.')
-            //console.log(nextStep);
+            console.log('Step 8 - In case of no price sent, it should do the check.')
+            console.log(nextStep);
             if (!data.price) {
                 switch (data.command) {
                     case "BUY":
@@ -106,9 +106,9 @@ exports.handler = function(event, context) {
         },
 
         function(arg1, rows, nextStep) {
-            //console.log('Step 9 - Display prices on one of sides of orderbook.');
-            //console.log(arg1);
-            //console.log(nextStep);
+            console.log('Step 9 - Display prices on one of sides of orderbook.');
+            console.log(arg1);
+            console.log(nextStep);
             if (!data.price) {
                 switch (data.command) {
                     case "BUY":
@@ -129,22 +129,22 @@ exports.handler = function(event, context) {
         },
 
         function(arg1, rows, nextStep) {
-            //console.log('Step 10 - Insert valid order into orderbook.');
-            //console.log(arg1);
-            //console.log(nextStep);
-            //console.log('Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' successfully inserted!');
+            console.log('Step 10 - Insert valid order into orderbook.');
+            console.log(arg1);
+            console.log(nextStep);
+            console.log('Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' successfully inserted!');
             da.insertOrder(data, nextStep);
         },
 
         function(arg1, rows, nextStep) {
-            //console.log('Step 11A - Matchmaking time!');
-            //console.log(nextStep);
+            console.log('Step 11A - Matchmaking time!');
+            console.log(nextStep);
             da.deleteMatchedOrders(data, nextStep);
         },
 
         function(arg1, rows, nextStep) {
-            //console.log('Step 11B - Was there a trade?!');
-            //console.log(nextStep);
+            console.log('Step 11B - Was there a trade?!');
+            console.log(nextStep);
             var match = rows.affectedRows;
             if (match == 2)
                 context.succeed(':money_with_wings: Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + ' EUR! :money_with_wings:');
@@ -152,25 +152,25 @@ exports.handler = function(event, context) {
         },
 
         function(arg1, rows, nextStep) {
-            //console.log('Step 12 - Counting order, maybe there are too many of them.')
-            //console.log(nextStep);
+            console.log('Step 12 - Counting order, maybe there are too many of them.')
+            console.log(nextStep);
             da.countOrders(data, nextStep);
         },
 
         function(arg1, rows, nextStep) {
-            //console.log(arg1);
-            //console.log('Step 13 - Evaluating amount of orders, deleting irrelevant, if found.')
+            console.log(arg1);
+            console.log('Step 13 - Evaluating amount of orders, deleting irrelevant, if found.')
             var totalOrders = _.values(rows);
             var irrelevantOrders = totalOrders - market_depth;
-            //console.log(totalOrders);
+            console.log(totalOrders);
             if (totalOrders > market_depth) {
                 switch (data.command) {
                     case "BUY":
-                        //console.log('Irrelevant orders on bid side: ' + irrelevantOrders);
+                        console.log('Irrelevant orders on bid side: ' + irrelevantOrders);
                         da.deleteLowestBid(data, nextStep);
                         break;
                     case "SELL":
-                        //console.log('Irrelevant orders on ask side: ' + irrelevantOrders);
+                        console.log('Irrelevant orders on ask side: ' + irrelevantOrders);
                         da.deleteHighestAsk(data, nextStep);
                         break;
                     default:
@@ -181,8 +181,8 @@ exports.handler = function(event, context) {
         },
 
         function(arg1, rows, nextStep) {
-        //console.log(arg1);
-        //console.log('Step 14 - Final check.')
+        console.log(arg1);
+        console.log('Step 14 - Final check.')
         if (arg1 == 'relevant')
             nextStep(null, 'Thank you! Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was saved to the orderbook!');
             else {

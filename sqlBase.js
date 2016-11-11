@@ -3,9 +3,9 @@ var mysql = require('mysql');
 function connectionStart()
 {
         var connection = mysql.createConnection({
-        host     : 'microexchange.cbhsjvpjrptr.us-west-2.rds.amazonaws.com',
+        host     : 'zu697-microexchange.c4ghekdkimzt.eu-central-1.rds.amazonaws.com',
         database : 'microexchange',
-        user     : 'microadmin',
+        user     : 'mastertrader',
         password : 'micropassword',
         });
         return connection;
