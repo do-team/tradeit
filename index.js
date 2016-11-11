@@ -2,7 +2,6 @@ var da = require('./dataAccess');
 var common = require('./common');
 var fun = require('./functions.js');
 var async = require('async');
-var _ = require('lodash');
 var market_depth = 5;
 
 exports.handler = function(event, context) {

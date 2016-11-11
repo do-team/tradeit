@@ -36,8 +36,6 @@ exports.executeQuery = function(sqlQuery, callback)
         if (err) {
             callback('SQL error', null);
         } else {
-            //console.log(callback);
-            //console.log(rows);
             callback(null, 'ok', rows);
         }
         connection.end();
@@ -54,8 +52,6 @@ exports.executeSingle = function(sqlQuery, callback)
         if (err) {
             callback('SQL error', null);
         } else {
-            //console.log(callback);
-            //console.log(rows[0]);
             callback(null, 'ok', rows[0]);
         }
         connection.end();
