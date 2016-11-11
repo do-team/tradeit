@@ -88,7 +88,7 @@ exports.handler = function(event, context) {
         },
 
         function(nextStep) {
-            console.log('Step 8 - In case of no price sent, it should do the check.')
+            console.log('Step 8 - In case of no price sent, it should do the check.');
             console.log(nextStep);
             if (!data.price) {
                 switch (data.command) {
@@ -152,7 +152,7 @@ exports.handler = function(event, context) {
         },
 
         function(arg1, rows, nextStep) {
-            console.log('Step 12 - Counting order, maybe there are too many of them.')
+            console.log('Step 12 - Counting order, maybe there are too many of them.');
             console.log(nextStep);
             da.countOrders(data, nextStep);
         },
