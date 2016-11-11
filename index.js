@@ -12,7 +12,6 @@ exports.handler = function(event, context) {
     async.waterfall([
 
         function(nextStep) {
-            //var arg1 = 'ok';
             console.log('Step 1 - Write into history');
             console.log(nextStep);
             da.myHistoryRecord(event, nextStep);
@@ -27,10 +26,10 @@ exports.handler = function(event, context) {
                         da.getMyProductNames(nextStep);
                         break;
                     case "help":
-                        context.succeed('HELP recognised!');
+                        finalStep(null, 'HELP');
                         break;
                     case "test":
-                        context.succeed('TEST OK');
+                        nextStep('TEST OK', null);
                         break;
                     default:
                         nextStep(null, 'skipped', null);
@@ -183,9 +182,9 @@ exports.handler = function(event, context) {
         console.log(arg1);
         console.log('Step 14 - Final check.')
         if (arg1 == 'relevant')
-            nextStep(null, 'Thank you! Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was saved to the orderbook!');
+            nextStep(null, 'Thank you! :money_mouth_face: Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was saved to the orderbook!');
             else {
-                nextStep(null, 'Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was accepted. However it broke a limit of market depth, so irrelevant orders were automatically deleted.');
+                nextStep(null, 'Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was accepted. :money_mouth_face: However it broke a limit of market depth, so irrelevant orders were automatically deleted. :feelsgood:');
             }
         }
 
