@@ -3,49 +3,62 @@ var mysql = require('mysql');
 function connectionStart()
 {
         var connection = mysql.createConnection({
-        host     : 'futuredb.cbhsjvpjrptr.us-west-2.rds.amazonaws.com',
+        host     : 'microexchange.cbhsjvpjrptr.us-west-2.rds.amazonaws.com',
         database : 'microexchange',
-        user     : 'marty',
-        password : 'martymarty',
+        user     : 'microadmin',
+        password : 'micropassword',
         });
         return connection;
 }
 
-exports.getStaticData = function(sqlQuery, callback)
-    {
-        var connection = connectionStart();
-        //console.log(callback);
-        //console.log(sqlQuery);
-        connection.connect();
-        connection.query(sqlQuery, function(err, rows, fields){
-        if (callback) {
-              if (err)
-              {
-                callback(err,null);
-              }
-              else
-              //console.log('ROWS ' + rows);
-              //console.log('FIELDS ' + fields);
-              callback(null, rows);}
-      });
-      connection.end();
+exports.executeScalar = function(sqlQuery, callback)
+{
+    var connection = connectionStart();
+    connection.connect();
+    connection.query(sqlQuery, function(err, rows, fields) {
+        console.log('Inside scalar query: ' + connection.state);
+        if (err) {
+            callback('SQL error', null);
+        } else {
+            callback(null, 'ok');
+        }
+        connection.end();
+    });
+
 }
 
-exports.getSingleRecord = function(sqlQuery, callback)
+exports.executeQuery = function(sqlQuery, callback)
 {
-        var connection = connectionStart();
-        //console.log(callback);
-        //console.log(sqlQuery);
-        connection.connect();
-        connection.query(sqlQuery, function(err, rows, fields){
-                if (err)
-                {
-                  callback(err,null);
-                }
-                else
-                  //console.log('ROWS ' + rows[0]);
-                  //console.log('FIELDS ' + fields);
-                  callback(null, rows[0]);
-        });
+    var connection = connectionStart();
+    connection.connect();
+    connection.query(sqlQuery, function(err, rows) {
+        console.log('Inside Execute query: ' + connection.state);
+        if (err) {
+            callback('SQL error', null);
+        } else {
+            //console.log(callback);
+            //console.log(rows);
+            callback(null, 'ok', rows);
+        }
         connection.end();
+    });
+
+}
+
+exports.executeSingle = function(sqlQuery, callback)
+{
+    var connection = connectionStart();
+    connection.connect();
+    connection.query(sqlQuery, function(err, rows) {
+        console.log('Inside Execute query: ' + connection.state);
+        if (err) {
+            callback('SQL error', null);
+        } else {
+            //console.log(callback);
+            //console.log(rows[0]);
+            callback(null, 'ok', rows[0]);
+        }
+        connection.end();
+    });
+
 }
