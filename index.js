@@ -13,7 +13,6 @@ exports.handler = function(event, context) {
     async.waterfall([
 
         function(nextStep) {
-            //var arg1 = 'ok';
             console.log('Step 1 - Write into history');
             console.log(nextStep);
             da.myHistoryRecord(event, nextStep);
@@ -28,10 +27,10 @@ exports.handler = function(event, context) {
                         da.getMyProductNames(nextStep);
                         break;
                     case "help":
-                        context.succeed('HELP recognised!');
+                        finish(null, 'HELP recognised!');
                         break;
                     case "test":
-                        context.succeed('TEST OK');
+                        finish(null, 'TEST OK');
                         break;
                     default:
                         nextStep(null, 'skipped', null);
@@ -46,7 +45,7 @@ exports.handler = function(event, context) {
             console.log(nextStep);
             if (arg1 == 'ok') {
                 var result = (fun.myDisplayProducts(rows));
-                context.succeed('Available products: ' + result.toUpperCase());
+                finish(null, 'Available products: ' + result.toUpperCase());
             } else
                 nextStep(null);
         },
@@ -63,7 +62,7 @@ exports.handler = function(event, context) {
             console.log(nextStep);
             if (arg1 == 'ok') {
                 result = fun.myIncomingCommand(rows);
-                if (result) context.succeed(result);
+                if (result) finish(null, result);
                 nextStep(null);
             } else
                 nextStep(null);
@@ -81,14 +80,14 @@ exports.handler = function(event, context) {
             console.log(nextStep);
             if (arg1 == 'ok') {
                 result = fun.myIncomingProduct(rows);
-                if (result) context.succeed(result);
+                if (result) finish(null, result);
                 nextStep(null);
             } else
                 nextStep(null);
         },
 
         function(nextStep) {
-            console.log('Step 8 - In case of no price sent, it should do the check.');
+            console.log('Step 8 - In case of no price sent, it should do the check.')
             console.log(nextStep);
             if (!data.price) {
                 switch (data.command) {
@@ -113,12 +112,12 @@ exports.handler = function(event, context) {
                 switch (data.command) {
                     case "BUY":
                         result = fun.showAskPrices(rows);
-                        if (result) context.succeed(result);
+                        if (result) finish(null, result);
                         nextStep(null);
                         break;
                     case "SELL":
                         result = fun.showBidPrices(rows);
-                        if (result) context.succeed(result);
+                        if (result) finish(null, result);
                         nextStep(null);
                         break;
                     default:
@@ -147,12 +146,12 @@ exports.handler = function(event, context) {
             console.log(nextStep);
             var match = rows.affectedRows;
             if (match == 2)
-                context.succeed(':money_with_wings: Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + ' EUR! :money_with_wings:');
+                finish(null, ':money_with_wings: Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + ' EUR! :money_with_wings:');
             else nextStep(null, 'ok', null);
         },
 
         function(arg1, rows, nextStep) {
-            console.log('Step 12 - Counting order, maybe there are too many of them.');
+            console.log('Step 12 - Counting order, maybe there are too many of them.')
             console.log(nextStep);
             da.countOrders(data, nextStep);
         },
@@ -194,6 +193,13 @@ exports.handler = function(event, context) {
         if (err)
             context.fail(err);
         context.succeed(result);
-    });
+    }
 
+
+    );
+function finish(err, result) { // Named function for early quit from async.waterfall.
+            if (err)
+                context.fail(err);
+            context.succeed(result);
+        }
 }
