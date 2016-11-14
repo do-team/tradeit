@@ -12,6 +12,7 @@ exports.myHistoryRecord = function(event, callback)
 exports.getMyProductNames = function(callback)
 {
         var query = "SELECT product_name FROM products";
+        //console.log(query);
         sqlBase.executeQuery(query, callback);
 }
 
@@ -19,7 +20,7 @@ exports.getMyProductNames = function(callback)
 exports.confirmMyCommand = function(data, callback)
 {
         var query = "SELECT * FROM order_types WHERE type='" + data.command + "'";
-        console.log(query);
+        //console.log(query);
         sqlBase.executeQuery(query, callback);
 }
 
@@ -27,7 +28,7 @@ exports.confirmMyCommand = function(data, callback)
 exports.confirmMyProduct = function(data, callback)
 {
         var query = "SELECT * FROM products WHERE product_name='" + data.product + "'";
-        console.log(query);
+        //console.log(query);
         sqlBase.executeQuery(query, callback);
 }
 
@@ -35,7 +36,7 @@ exports.confirmMyProduct = function(data, callback)
 exports.getAskPrices = function(data, callback)
 {
         var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='SELL' ORDER BY price ASC";
-        console.log(query);
+        //console.log(query);
         sqlBase.executeQuery(query, callback);
 }
 
@@ -43,7 +44,7 @@ exports.getAskPrices = function(data, callback)
 exports.getBidPrices = function(data, callback)
 {
         var query = "SELECT * FROM orderbook WHERE product_name='" + data.product + "' AND order_type='BUY' ORDER BY price DESC";
-        console.log(query);
+        //console.log(query);
         sqlBase.executeQuery(query, callback);
 }
 
@@ -51,7 +52,7 @@ exports.getBidPrices = function(data, callback)
 exports.insertOrder = function(data, callback)
 {
         var query = "INSERT INTO orderbook (order_type, product_name, price) VALUES ('" + data.command + "','" + data.product + "', " + data.price + ")";
-        console.log(query);
+        //console.log(query);
         sqlBase.executeSingle(query, callback);
 }
 
@@ -59,7 +60,7 @@ exports.insertOrder = function(data, callback)
 exports.countOrders = function(data, callback)
 {
         var query = "SELECT COUNT(*) FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "'";
-        console.log(query);
+        //console.log(query);
         sqlBase.executeSingle(query, callback);
 }
 
@@ -67,7 +68,7 @@ exports.countOrders = function(data, callback)
 exports.deleteLowestBid = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price ASC LIMIT 1";
-        console.log(query);
+        //console.log(query);
         sqlBase.executeQuery(query, callback);
 }
 
@@ -75,7 +76,7 @@ exports.deleteLowestBid = function(data, callback)
 exports.deleteHighestAsk = function(data, callback)
 {
         var query = "DELETE FROM orderbook WHERE product_name='" + data.product + "' AND order_type='" + data.command + "' ORDER BY price DESC LIMIT 1";
-        console.log(query);
+        //console.log(query);
         sqlBase.executeQuery(query, callback);
 }
 
@@ -83,6 +84,6 @@ exports.deleteHighestAsk = function(data, callback)
 exports.deleteMatchedOrders = function(data, callback)
 {
         var query = "delete from microexchange.orderbook where order_id in ( select order_id from ( (select  os.order_id from microexchange.orderbook os, microexchange.orderbook ob where os.price = " + data.price + " and os.product_name = '" + data.product +"' and os.order_type='sell' AND ob.price = " + data.price + " and ob.product_name = '" + data.product +"' and ob.order_type='buy' limit 1) union (select  ob.order_id from microexchange.orderbook os, microexchange.orderbook ob  where os.price = " + data.price + " and os.product_name = '" + data.product +"' and os.order_type='sell' AND ob.price = " + data.price + " and ob.product_name = '" + data.product +"' and ob.order_type='buy' limit 1) )  as t1)";
-        console.log(query);
+        //console.log(query);
         sqlBase.executeQuery(query, callback);
 }
