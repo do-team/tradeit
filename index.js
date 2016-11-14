@@ -197,7 +197,7 @@ exports.handler = function(event, context) {
 
 
     );
-function finish(err, result) {
+function finish(err, result) { // Named function for early quit from async.waterfall.
             if (err)
                 context.fail(err);
             context.succeed(result);
