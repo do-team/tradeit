@@ -113,17 +113,17 @@ exports.handler = function(event, context) {
                     case "BUY":
                         result = fun.showAskPrices(rows);
                         if (result) finish(null, result);
-                        nextStep(null);
+                        //nextStep(null);
                         break;
                     case "SELL":
                         result = fun.showBidPrices(rows);
                         if (result) finish(null, result);
-                        nextStep(null);
+                        //nextStep(null);
                         break;
                     default:
                         nextStep('Command not recognised!', null);
                 }
-                return;
+                //return;
             } else nextStep(null, 'ok', null);
         },
 
