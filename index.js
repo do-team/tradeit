@@ -123,7 +123,7 @@ exports.handler = function(event, context) {
                     default:
                         nextStep('Command not recognised!', null);
                 }
-                //return;
+                return;
             } else nextStep(null, 'ok', null);
         },
 
