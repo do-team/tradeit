@@ -202,6 +202,7 @@ function finish(err, result) { // Named function for early quit from async.water
                 context.fail(err);
             context.succeed('{
                             "response_type": "in_channel",
-                            "text": "' + result +'"}');
+                            "text": ' + result + '
+                            }');
             }
 }
