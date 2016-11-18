@@ -5,6 +5,7 @@ var fun = require('./functions.js');
 var async = require('async');
 var _ = require('lodash');
 var market_depth = 5;
+var helpText = require('./help.json');
 
 exports.handler = function(event, context) {
 
@@ -28,7 +29,6 @@ exports.handler = function(event, context) {
                         da.getMyProductNames(nextStep);
                         break;
                     case "help":
-                        var helpText = (fs.readFileSync('help.json','utf8'));
                         finish(null, helpText);
                         break;
                     case "test":
