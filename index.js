@@ -1,3 +1,4 @@
+const fs = require('fs');
 var da = require('./dataAccess');
 var common = require('./common');
 var fun = require('./functions.js');
@@ -27,7 +28,8 @@ exports.handler = function(event, context) {
                         da.getMyProductNames(nextStep);
                         break;
                     case "help":
-                        finish(null, 'HELP recognised!');
+                        var helpText = (fs.readFileSync('help.json','utf8'));
+                        finish(null, helpText);
                         break;
                     case "test":
                         finish(null, 'TEST OK');
