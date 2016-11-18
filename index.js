@@ -148,7 +148,7 @@ exports.handler = function(event, context) {
             console.log(nextStep);
             var match = rows.affectedRows;
             if (match == 2)
-                finish(null, ':money_with_wings: Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + ' EUR! :money_with_wings:');
+                finishVisible(null, ':money_with_wings: Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + ' EUR! :money_with_wings:');
             else nextStep(null, 'ok', null);
         },
 
@@ -185,9 +185,9 @@ exports.handler = function(event, context) {
         console.log(arg1);
         console.log('Step 14 - Final check.')
         if (arg1 == 'relevant')
-            nextStep(null, 'Thank you! Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was saved to the orderbook!');
+            finishVisible(null, 'Thank you! Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was saved to the orderbook!');
             else {
-                nextStep(null, 'Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was accepted. However it broke a limit of market depth, so irrelevant orders were automatically deleted.');
+                finishVisible(null, 'Your order ' + data.command + ' ' + data.product + ' ' + data.price + ' was accepted. As it brokes a limit of market depth ' + market_depth + ', irrelevant orders were automatically deleted.');
             }
         }
 
@@ -197,11 +197,21 @@ exports.handler = function(event, context) {
         context.succeed(result);
     }
 
-
     );
-function finish(err, result) { // Named function for early quit from async.waterfall.
+function finish(err, result) { // Finish early (quit from async.waterfall).
             if (err)
                 context.fail(err);
             context.succeed(result);
+        }
+
+function finishVisible(err, result) { // Finish early and display message in Slack visible to others.
+            if (err)
+                context.fail(err);
+       var visible = {
+                         "response_type": "in_channel",
+                         "text": "  + result + ",
+                     }
+
+            context.succeed(visible);
         }
 }
