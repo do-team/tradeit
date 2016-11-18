@@ -197,7 +197,6 @@ exports.handler = function(event, context) {
         context.succeed(result);
     }
 
-
     );
 function finish(err, result) { // Finish early (quit from async.waterfall).
             if (err)

@@ -1,15 +1,15 @@
 {
-    "text": "*Welcome to TradeIT, your simple exchange platform* \nThere is no inventory and no accounts, meaning this is only harmless fun, more like little game.\n \n*Valid commands:*\n`products` will display currently available products.\n`buy slack` will display all prices, for which you can buy product named `slack`.\n`sell linux 100` will attempt to sell product named `linux` for a price of `100`.",
+    "text": "*Welcome to TradeIT, your simple exchange platform* \nThere is no inventory and no accounts, meaning this is only harmless fun, more like little game.\n \n*Valid commands following /TRD:*\n`products` will display currently available products.\n`buy slack` will display all prices, for which you can buy product named `slack`.\n`sell linux 100` will attempt to sell product named `linux` for a price of `100`.",
     "attachments": [
 		{
 			"text": "Sometimes, almost randomly, you might see a timeout message. Just send your command again, please.",
 			"color": "danger"
         },
 		{
-			"author_name": "GitHub",
+			"author_name": "Source is obviously on GitHub",
             "author_link": "https://github.com/do-team/tradeit",
             "author_icon": "https://cdn0.iconfinder.com/data/icons/octicons/1024/mark-github-128.png",
-			"text": "There is a market depth of 5, meaning on one side of the orderbook you can have up to 5 orders for each products. In case you send an order breaking this limit, the least relevant order in the book will be automatically deleted.",
+			"text": "This exchange has market depth set to 5 by default, meaning any additional order will be automatically deleted (cheapest buy order or most expensive sell order).",
 			"color": "good"
         },
 		{

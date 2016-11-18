@@ -197,12 +197,12 @@ exports.handler = function(event, context) {
         context.succeed(result);
     }
 
-
     );
 function finish(err, result) { // Finish early (quit from async.waterfall).
             if (err)
                 context.fail(err);
             context.succeed(result);
+<<<<<<< HEAD
         }
 
 function finishVisible(err, result) { // Finish early and display message in Slack visible to others.
@@ -215,4 +215,7 @@ function finishVisible(err, result) { // Finish early and display message in Sla
 
             context.succeed(visible);
         }
+=======
+}
+>>>>>>> master
 }
