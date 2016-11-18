@@ -1,5 +1,5 @@
 {
-    "text": "*Welcome to TradeIT, your simple exchange platform* \nThere is no inventory and no accounts, meaning this is only harmless fun, more like little game.\n \n*Valid commands following /TRD:*\n`products` will display currently available products.\n`buy slack` will display all prices, for which you can buy product named `slack`.\n`sell linux 100` will attempt to sell product named `linux` for a price of `100`.",
+    "text": "*Welcome to TradeIT, your simple exchange platform* \nBuy and sell your favourite shares directly via Slack. Simply type a command and make a decision based on response. There is no inventory and no accounts, meaning this is only harmless fun, more like little game.\n \n*Valid commands following /TRD:*\n`products` will display currently available products.\n`buy slack` will display all prices, for which you can buy product named `slack`.\n`sell linux 100` will attempt to sell product named `linux` for a price of `100`.",
     "attachments": [
 		{
 			"text": "Sometimes, almost randomly, you might see a timeout message. Just send your command again, please.",
@@ -9,7 +9,7 @@
 			"author_name": "Source is obviously on GitHub",
             "author_link": "https://github.com/do-team/tradeit",
             "author_icon": "https://cdn0.iconfinder.com/data/icons/octicons/1024/mark-github-128.png",
-			"text": "This exchange has market depth set to 5 by default, meaning any additional order will be automatically deleted (cheapest buy order or most expensive sell order).",
+			"text": "This exchange has market depth set to 5 by default, meaning any additional order will be automatically deleted (cheapest buy order or most expensive sell order).\nAll messages you send are invisible to other Slack users, with exception of succefull trade. You want to share your success, right?",
 			"color": "good"
         },
 		{
