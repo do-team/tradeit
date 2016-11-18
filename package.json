@@ -1,7 +1,7 @@
 {
   "name": "tradeit",
   "version": "1.0.0",
-  "description": "A social oasis for lovers of trading.",
+  "description": "Super simple server less microexchange.",
   "repository": "https://github.com/do-team/tradeit",
   "main": "index.js",
   "scripts": {
@@ -9,9 +9,8 @@
   },
   "dependencies": {
     "async": "^2.1.2",
-    "aws-sdk": "2.3.11",
-    "lodash": "*",
-    "mysql": "*",
+    "lodash": "4.17.2",
+    "mysql": "2.12.0",
     "promise": "^7.1.1"
   }
 }
