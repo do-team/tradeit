@@ -1,5 +1,5 @@
 {
-    "text": "*Welcome to TradeIT, your simple exchange platform* \nBuy and sell your favourite shares directly via Slack. Simply type a command and make a decision based on response. There is no inventory and no accounts, meaning this is only harmless fun, more like little game.\n \n*Valid commands following /TRD:*\n`products` will display currently available products.\n`buy slack` will display all prices, for which you can buy product named `slack`.\n`sell linux 100` will attempt to sell product named `linux` for a price of `100`.",
+    "text": "*Welcome to TradeIT, your simple exchange platform* \nBuy and sell your favourite shares directly via Slack. Simply type a command and make a decision based on response.\nThere is no inventory and no accounts, meaning this is only harmless fun, more like little game.\n \n*Valid commands following /TRD:*\n`products` will display currently available products.\n`buy slack` will display all prices, for which you can buy product named `slack`.\n`sell linux 100` will attempt to sell product named `linux` for a price of `100`.",
     "attachments": [
 		{
 			"text": "Sometimes, almost randomly, you might see a timeout message. Just send your command again, please.",
