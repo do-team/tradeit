@@ -148,7 +148,7 @@ exports.handler = function(event, context) {
                 console.log(nextStep);
                 var match = rows.affectedRows;
                 if (match == 2)
-                    finishVisible(null, ':money_with_wings: Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + ' &#162; ! :money_with_wings:');
+                    finishVisible(null, ':money_with_wings: Congratulations! You have just traded ' + data.product + ' for the price of ' + data.price + ' credits! :money_with_wings:');
                 else nextStep(null, 'ok', null);
             },
 
