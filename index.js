@@ -6,6 +6,8 @@ var async = require('async');
 var _ = require('lodash');
 var market_depth = 5;
 var helpText = require('./help.json');
+var PAGE_TOKEN = process.env.PAGE;
+var VERIFY_TOKEN = process.env.TOKEN;
 
 exports.handler = function(event, context) {
 
