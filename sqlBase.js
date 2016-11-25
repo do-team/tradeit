@@ -3,10 +3,10 @@ var mysql = require('mysql');
 function connectionStart()
 {
         var connection = mysql.createConnection({
-        host     : 'zu697-microexchange.c4ghekdkimzt.eu-central-1.rds.amazonaws.com',
-        database : 'microexchange',
-        user     : 'mastertrader',
-        password : 'micropassword',
+        host     : process.env.TRDIT_DB_URL,
+        database : process.env.TRDIT_DB_NAME,
+        user     : process.env.TRDIT_DB_USER,
+        password : process.env.TRDIT_DB_PASSWORD,
         });
         return connection;
 }
