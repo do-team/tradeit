@@ -10,6 +10,23 @@ var PAGE_TOKEN = process.env.PAGE;
 var VERIFY_TOKEN = process.env.TOKEN;
 
 exports.handler = function(event, context) {
+/// start FB integration
+
+  // process GET request
+  if(event.params && event.params.querystring){
+    var queryParams = event.params.querystring;
+
+    var rVerifyToken = queryParams['hub.verify_token']
+
+    if (rVerifyToken === VERIFY_TOKEN) {
+      var challenge = queryParams['hub.challenge']
+      callback(null, parseInt(challenge))
+    }else{
+      callback(null, 'Error, wrong validation token');
+    }
+  }
+
+/// end of FB integration
 
     var data = common.parseInputOrder(event.text); // Now we got data.command, data.product and data.price.
     exports.data = data;
