@@ -1,4 +1,5 @@
 # TradeIT!
+
 ## Server less microtrading platform
 
 Allow your friends and users to trade with popular items, anytime,
@@ -18,9 +19,18 @@ User can check existing offers in orderbook by typing `sell win` or
 There is no intention to have any user management, inventory or account, 
 all is just harmless fun, almost as a game.
 
+## Technical setup
+
 For deployment, I recommend to use [LambdaDeploy](https://github.com/taylorking/LambdaDeploy) project.
 
 To create Slack integration (API + slash command) I recommend to follow
 [this article](https://medium.com/@pixelcodeuk/create-a-slack-slash-command-with-aws-lambda-83fb172f9a74#.rzjjx3g22).
+
+File [database_setup.sql](./MySQLdb/database_setup.sql) contains basic setup of MySQL table,
+including products (Warcraft 2 theme). Application currently supports only
+BUY and SELL order types.
+
+Environmental variables `TRDIT_DB_URL`, `TRDIT_DB_NAME`, `TRDIT_DB_USER`
+and `TRDIT_DB_PASSWORD` are required for proper connection to database.
 
 Have fun!
